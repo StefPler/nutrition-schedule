@@ -18,7 +18,7 @@ export const WeeklySchedule = () => {
 
   if (!weeklyScheduleRows)
     return (
-      <div className="flex place-items-center my-auto mx-auto">
+      <div className="flex justify-center items-center h-[80vh]">
         <Circles
           height="40"
           width="40"
@@ -47,7 +47,7 @@ export const WeeklySchedule = () => {
   return (
     <div className="">
       <Table className="border-2 rounded-xl border-black border-separate">
-        <TableCaption>Your Schedule for a brighter tomorrow.</TableCaption>
+        <TableCaption>Be your own driving force.</TableCaption>
 
         <TableHeader className="">
           <TableRow className="">
