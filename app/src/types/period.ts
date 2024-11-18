@@ -11,6 +11,16 @@ export type Days =
   | "Saturday"
   | "Sunday";
 
+export enum DaysEnum {
+  Sunday = 0,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+}
+
 export type DailySchedule = Record<Meal, FoodEntry>;
 
 export type WeeklySchedule = Record<Days, DailySchedule>;
@@ -22,4 +32,4 @@ export type Recipe = {
   name: String;
   category: Category;
   link: String;
-}
+};

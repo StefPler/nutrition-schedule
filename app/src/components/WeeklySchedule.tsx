@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,9 +12,15 @@ import {
 import { useSchedule } from "@/src/hooks/useSchedule";
 import { WeeklyMealRow } from "./WeeklyMealRow";
 import { Circles } from "react-loader-spinner";
+import { DaysEnum } from "../types/period";
 
 export const WeeklySchedule = () => {
   const { weeklyScheduleRows, rerollMeal } = useSchedule();
+  const [day, setDay] = useState(new Date().getDay());
+
+  const highlightDay = (selection: DaysEnum) => {
+    return selection === day ? "bg-slate-400 text-white rounded-md" : "";
+  };
 
   if (!weeklyScheduleRows)
     return (
@@ -52,25 +58,53 @@ export const WeeklySchedule = () => {
         <TableHeader className="">
           <TableRow className="">
             {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Monday)
+              }>
               Δευτέρα
             </TableHead>
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Tuesday)
+              }>
               Τρίτη
             </TableHead>
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Wednesday)
+              }>
               Τετάρτη
             </TableHead>
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Thursday)
+              }>
               Πέμπτη
             </TableHead>
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Friday)
+              }>
               Παρασκευή
             </TableHead>
-            <TableHead className="border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Saturday)
+              }>
               Σάββατο
             </TableHead>
-            <TableHead className="border-b-[1px] border-slate-400 text-center text-lg">
+            <TableHead
+              className={
+                "border-b-[1px] border-slate-400 text-center text-lg " +
+                highlightDay(DaysEnum.Sunday)
+              }>
               Κυριακή
             </TableHead>
             {/* <TableHead className="text-right">Amount</TableHead> */}

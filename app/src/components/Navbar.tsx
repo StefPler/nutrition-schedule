@@ -1,34 +1,28 @@
 "use client";
 
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-} from "@/src/components/ui/navigation-menu";
-import { NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import { ChildrenProps } from "../app/layout";
+import { TabNav, Text } from "@radix-ui/themes";
+import { usePathname } from "next/navigation";
 
 export const Navbar = ({ children }: ChildrenProps) => {
+  const pathname = usePathname();
+
   return (
     <>
       <div className="relative w-full h-full flex-col">
-        <div className="sticky top-0 flex w-full h-full bg-primary p-5 space-x-4 justify-between items-center text-white">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/">Schedule</NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/recipes">Recipes</NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+        {/* <div className="sticky top-0 flex w-full h-full bg-primary p-5 space-x-4 justify-between items-center text-white"> */}
+        <div>
+          <TabNav.Root justify="center" color="green">
+            <TabNav.Link href="/" active={pathname === "/"}>
+              <Text size="4">Schedule</Text>
+            </TabNav.Link>
+            <TabNav.Link href="/recipes" active={pathname === "/recipes"}>
+              <Text size="4">Recipes</Text>
+            </TabNav.Link>
+          </TabNav.Root>
         </div>
 
-        <div className="flex-1 p-4 bg-grey-100">
+        <div className="flex-1 p-4">
           <div className="max-w-[1300px] mx-auto">{children}</div>
         </div>
       </div>
