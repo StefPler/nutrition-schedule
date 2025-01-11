@@ -1,5 +1,5 @@
 // import Image from "next/image";
-
+"use client";
 import { WeeklySchedule } from "@/src/components/WeeklySchedule";
 
 export default function Home() {

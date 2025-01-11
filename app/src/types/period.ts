@@ -26,10 +26,3 @@ export type DailySchedule = Record<Meal, FoodEntry>;
 export type WeeklySchedule = Record<Days, DailySchedule>;
 
 export type WeeklyScheduleRows = Record<Meal, Array<FoodEntry>>;
-
-export type Recipe = {
-  id: number;
-  name: String;
-  category: Category;
-  link: String;
-};

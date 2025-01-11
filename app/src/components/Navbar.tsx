@@ -2,6 +2,7 @@
 
 import { ChildrenProps } from "../app/layout";
 import { TabNav, Text } from "@radix-ui/themes";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const Navbar = ({ children }: ChildrenProps) => {
@@ -13,11 +14,15 @@ export const Navbar = ({ children }: ChildrenProps) => {
         {/* <div className="sticky top-0 flex w-full h-full bg-primary p-5 space-x-4 justify-between items-center text-white"> */}
         <div>
           <TabNav.Root justify="center" color="green">
-            <TabNav.Link href="/" active={pathname === "/"}>
-              <Text size="4">Schedule</Text>
+            <TabNav.Link asChild={true} active={pathname === "/"}>
+              <Link href="/">
+                <Text size="4">Πρόγραμμα</Text>
+              </Link>
             </TabNav.Link>
-            <TabNav.Link href="/recipes" active={pathname === "/recipes"}>
-              <Text size="4">Recipes</Text>
+            <TabNav.Link asChild={true} active={pathname === "/recipes"}>
+              <Link href="/recipes">
+                <Text size="4">Συνταγές</Text>
+              </Link>
             </TabNav.Link>
           </TabNav.Root>
         </div>

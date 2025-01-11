@@ -9,20 +9,22 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { useSchedule } from "@/src/hooks/useSchedule";
+// import { useSchedule } from "@/src/hooks/useSchedule";
 import { WeeklyMealRow } from "./WeeklyMealRow";
 import { Circles } from "react-loader-spinner";
 import { DaysEnum } from "../types/period";
+import { useGetSchedule } from "../hooks/useGetSchedule";
 
 export const WeeklySchedule = () => {
-  const { weeklyScheduleRows, rerollMeal } = useSchedule();
+  const { data: weeklySchedule, isLoading } = useGetSchedule();
+  // const { rerollMeal } = useSchedule();
   const [day, setDay] = useState(new Date().getDay());
 
   const highlightDay = (selection: DaysEnum) => {
     return selection === day ? "bg-slate-400 text-white rounded-md" : "";
   };
 
-  if (!weeklyScheduleRows)
+  if (isLoading)
     return (
       <div className="flex justify-center items-center h-[80vh]">
         <Circles
@@ -51,80 +53,88 @@ export const WeeklySchedule = () => {
     );
 
   return (
-    <div className="">
-      <Table className="border-2 rounded-xl border-black border-separate">
-        <TableCaption>Be your own driving force.</TableCaption>
+    weeklySchedule?.byRow && (
+      <div className="">
+        <Table className="border-2 rounded-xl border-black border-separate">
+          <TableCaption>Γίνε η δική σου κινητήρια δύναμη.</TableCaption>
 
-        <TableHeader className="">
-          <TableRow className="">
-            {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Monday)
-              }>
-              Δευτέρα
-            </TableHead>
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Tuesday)
-              }>
-              Τρίτη
-            </TableHead>
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Wednesday)
-              }>
-              Τετάρτη
-            </TableHead>
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Thursday)
-              }>
-              Πέμπτη
-            </TableHead>
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Friday)
-              }>
-              Παρασκευή
-            </TableHead>
-            <TableHead
-              className={
-                "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Saturday)
-              }>
-              Σάββατο
-            </TableHead>
-            <TableHead
-              className={
-                "border-b-[1px] border-slate-400 text-center text-lg " +
-                highlightDay(DaysEnum.Sunday)
-              }>
-              Κυριακή
-            </TableHead>
-            {/* <TableHead className="text-right">Amount</TableHead> */}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <WeeklyMealRow meal="Πρωινό" foods={weeklyScheduleRows?.breakfast!} />
-          <WeeklyMealRow meal="Πρόγευμα" foods={weeklyScheduleRows?.snack1!} />
-          <WeeklyMealRow
-            meal="Μεσημεριανό"
-            foods={weeklyScheduleRows?.lunch!}
-            callback={rerollMeal}
-          />
-          <WeeklyMealRow
-            meal="Απογευματινό"
-            foods={weeklyScheduleRows?.snack2!}
-          />
-          <WeeklyMealRow meal="Βραδινό" foods={weeklyScheduleRows?.dinner!} />
-        </TableBody>
-      </Table>
-    </div>
+          <TableHeader className="">
+            <TableRow className="">
+              {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Monday)
+                }>
+                Δευτέρα
+              </TableHead>
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Tuesday)
+                }>
+                Τρίτη
+              </TableHead>
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Wednesday)
+                }>
+                Τετάρτη
+              </TableHead>
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Thursday)
+                }>
+                Πέμπτη
+              </TableHead>
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Friday)
+                }>
+                Παρασκευή
+              </TableHead>
+              <TableHead
+                className={
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Saturday)
+                }>
+                Σάββατο
+              </TableHead>
+              <TableHead
+                className={
+                  "border-b-[1px] border-slate-400 text-center text-lg " +
+                  highlightDay(DaysEnum.Sunday)
+                }>
+                Κυριακή
+              </TableHead>
+              {/* <TableHead className="text-right">Amount</TableHead> */}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <WeeklyMealRow
+              meal="Πρωινό"
+              foods={weeklySchedule.byRow.breakfast}
+            />
+            <WeeklyMealRow
+              meal="Πρόγευμα"
+              foods={weeklySchedule.byRow.snack1}
+            />
+            <WeeklyMealRow
+              meal="Μεσημεριανό"
+              foods={weeklySchedule.byRow.lunch}
+              // callback={rerollMeal}
+            />
+            <WeeklyMealRow
+              meal="Απογευματινό"
+              foods={weeklySchedule.byRow.snack2}
+            />
+            <WeeklyMealRow meal="Βραδινό" foods={weeklySchedule.byRow.dinner} />
+          </TableBody>
+        </Table>
+      </div>
+    )
   );
 };

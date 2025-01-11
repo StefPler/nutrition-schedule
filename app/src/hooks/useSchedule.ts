@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { Meal, WeeklySchedule, WeeklyScheduleRows } from "@/src/types/period";
 import { createWeeklySchedule } from "@/src/services/DietService";
@@ -15,12 +13,12 @@ export const useSchedule = () => {
     useState<WeeklyScheduleRows | null>(null);
 
   useEffect(() => {
+    console.log("useSchedule run");
     getWeeklySchedule().then(({ scheduleByDay, scheduleByRow }) => {
       console.log("shecduleInRows", scheduleByRow);
       setWeeklyScheduleRows(scheduleByRow);
     });
   }, []);
-
 
   const rerollMeal = (meal: Meal, category: Category, index: number) => {
     console.log("we be rollin", meal, category, index);
@@ -95,7 +93,6 @@ export const useSchedule = () => {
 
     // 3. If a match was found in redis we fetch it and return that one instead
   };
-  
 
   return { weeklySchedule, weeklyScheduleRows, rerollMeal };
 };
