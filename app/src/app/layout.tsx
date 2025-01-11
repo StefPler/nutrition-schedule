@@ -5,6 +5,7 @@ import "@radix-ui/themes/styles.css";
 import React from "react";
 import { Navbar } from "../components/Navbar";
 import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Providers } from "./Providers";
 
 const inter = Inter({ subsets: ["greek"] });
 
@@ -22,10 +23,12 @@ export default function RootLayout({ children }: ChildrenProps) {
     <html lang="gr">
       {/* "bg-gradient-to-r from-teal-100 to-yellow-100 " */}
       <body className={inter.className}>
-        <Theme hasBackground={true}>
-          {/* <ThemePanel /> */}
-          <Navbar>{children}</Navbar>
-        </Theme>
+        <Providers>
+          <Theme hasBackground={true}>
+            {/* <ThemePanel /> */}
+            <Navbar>{children}</Navbar>
+          </Theme>
+        </Providers>
       </body>
     </html>
   );
