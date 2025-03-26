@@ -16,12 +16,16 @@ export const Navbar = ({ children }: ChildrenProps) => {
           <TabNav.Root justify="center" color="green">
             <TabNav.Link asChild={true} active={pathname === "/"}>
               <Link href="/">
-                <Text size="4">Πρόγραμμα</Text>
+                <Text size="4" weight="bold">
+                  Πρόγραμμα
+                </Text>
               </Link>
             </TabNav.Link>
             <TabNav.Link asChild={true} active={pathname === "/recipes"}>
               <Link href="/recipes">
-                <Text size="4">Συνταγές</Text>
+                <Text size="4" weight="bold">
+                  Συνταγές
+                </Text>
               </Link>
             </TabNav.Link>
           </TabNav.Root>
