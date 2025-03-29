@@ -2,9 +2,21 @@
 "use client";
 import { WeeklySchedule } from "@/src/components/WeeklySchedule";
 import { Heading, Text } from "@radix-ui/themes";
+import {
+  calcBMI,
+  calcBodyFat,
+  macroCalculator,
+  WeightLossPerWeek,
+} from "@/src/services/CalculatorService";
 
 export default function Home() {
   const date = new Date();
+  const bmi = calcBMI(107, 177);
+  console.log(bmi);
+  const fat = calcBodyFat(28, 107, 177, 43, 108);
+  console.log(fat);
+  const macros = macroCalculator(107, 177, 28, WeightLossPerWeek.Maintain, 1);
+  console.log(macros);
   return (
     <>
       {/* <main className="flex min-h-screen items-center justify-between lg:p-10"> */}

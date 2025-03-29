@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { scheduleToRows } from "@/src/helpers/util";
 import axios from "axios";
 import { WeeklySchedule, WeeklyScheduleRows } from "../types/period";
-import { createWeeklySchedule } from "../services/DietService";
+import { createWeeklySchedule } from "../services/MealService";
 
 export function useGetSchedule() {
   const calculateNextBoundary = () => {

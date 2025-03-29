@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Meal, WeeklySchedule, WeeklyScheduleRows } from "@/src/types/period";
-import { createWeeklySchedule } from "@/src/services/DietService";
+import { createWeeklySchedule } from "@/src/services/MealService";
 import axios from "axios";
 import { Category } from "@/src/types/foods";
 import { pickRandomFoodFromCategory, scheduleToRows } from "@/src/helpers/util";
