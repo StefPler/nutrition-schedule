@@ -24,8 +24,11 @@ export default function RootLayout({ children }: ChildrenProps) {
       {/* "bg-gradient-to-r from-teal-100 to-yellow-100 " */}
       <body className={inter.className}>
         <Providers>
-          <Theme hasBackground={true}>
-            {/* <ThemePanel /> */}
+          <Theme
+            hasBackground={true}
+            panelBackground="translucent"
+            className="bg-gradient-to-r from-teal-100 to-yellow-100 ">
+            <ThemePanel />
             <Navbar>{children}</Navbar>
           </Theme>
         </Providers>

@@ -44,7 +44,16 @@ export const pickRandomFoodFromCategory = (
   return selection;
 };
 
-export const scheduleToRows = (schedule: WeeklySchedule): WeeklyScheduleRows => {
+export const pickFoodFromId = (meal: Meal, id: number): FoodEntry => {
+  const foods = getFoods(meal);
+  const food = foods.find((food) => food.id === id);
+  if (!food) throw new Error(`Food with id ${id} not found in ${meal}`);
+  return food;
+};
+
+export const scheduleToRows = (
+  schedule: WeeklySchedule
+): WeeklyScheduleRows => {
   return {
     breakfast: [
       schedule["Monday"].breakfast,
@@ -93,4 +102,3 @@ export const scheduleToRows = (schedule: WeeklySchedule): WeeklyScheduleRows => 
     ],
   };
 };
-

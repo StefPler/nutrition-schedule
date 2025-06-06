@@ -2,7 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { scheduleToRows } from "@/src/helpers/util";
 import axios from "axios";
 import { WeeklySchedule, WeeklyScheduleRows } from "../types/period";
-import { createWeeklySchedule } from "../services/MealService";
+import {
+  createStaticWeeklySchedule,
+  createWeeklySchedule,
+} from "../services/MealService";
 
 export function useGetSchedule() {
   const calculateNextBoundary = () => {
@@ -27,7 +30,8 @@ export function useGetSchedule() {
     // e.g: save in redis a hash for current active period ending in 26th of May
 
     // ------ Uncoment for local dev ------
-    byDay = createWeeklySchedule();
+    // byDay = createWeeklySchedule();
+    byDay = createStaticWeeklySchedule();
     byRow = scheduleToRows(byDay);
     return { byDay, byRow };
     // ------------------------------------

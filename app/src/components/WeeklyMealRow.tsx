@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { TableCell, TableRow } from "./ui/table";
+import { Table } from "@radix-ui/themes";
 import { Category, FoodEntry } from "@/src/types/foods";
 import { Meal } from "@/src/types/period";
 
@@ -30,30 +30,30 @@ export const WeeklyMealRow = ({
   };
   return (
     <>
-      <TableRow className="border-slate-400">
+      <Table.Row className="border-slate-400">
         {/* <TableCell className="text-left font-bold text-slate-700 border-r-[1px] border-slate-400">
           {meal}
         </TableCell> */}
         {foods?.map((food, index) => (
-          <TableCell
+          <Table.Cell
             className={`border-slate-400 content-start hover:bg-slate-200 ${
               index != 6 ? "border-r-[1px]" : ""
             } ${meal != "Βραδινό" ? "border-b-[1px]" : ""}`}
             key={index}>
             <p className="flex place-content-between font-semibold text-slate-600 border-b-[1px] border-slate-600 border-dashed pb-1">
               <span> {meal} </span>
-              <span
+              {/* <span
                 className="hover:cursor-pointer"
                 onClick={() => {
                   invokeIfFun("lunch", food.category, index);
                 }}>
                 Reroll
-              </span>
+              </span> */}
             </p>
             {NewlineText(food.description)}
-          </TableCell>
+          </Table.Cell>
         ))}
-      </TableRow>
+      </Table.Row>
     </>
   );
 };

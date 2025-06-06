@@ -31,8 +31,8 @@ export const Navbar = ({ children }: ChildrenProps) => {
           </TabNav.Root>
         </div>
 
-        <div className="flex-1 p-4">
-          <div className="max-w-[1300px] mx-auto">{children}</div>
+        <div className="flex-1 p-4 ">
+          <div className="max-w-[1600px] mx-auto">{children}</div>
         </div>
       </div>
     </>

@@ -68,7 +68,10 @@ export const useSchedule = () => {
 
     if (!activePeriod) {
       scheduleByDay = createWeeklySchedule();
-      scheduleByRow = scheduleToRows(scheduleByDay);
+      if (scheduleByDay == null) {
+        throw new Error("Failed to create weekly schedule");
+      }
+      scheduleByRow = scheduleToRows(scheduleByDay!);
       await axios.post("/api/active/schedule", { schedule: scheduleByRow });
       const newBoundary = calculateNextBoundary();
       await axios.post("/api/active/period", { date: newBoundary });
@@ -77,7 +80,10 @@ export const useSchedule = () => {
       if (now > activePeriodBoundary) {
         // create a new schedule
         scheduleByDay = createWeeklySchedule();
-        scheduleByRow = scheduleToRows(scheduleByDay);
+        if (scheduleByDay == null) {
+          throw new Error("Failed to create weekly schedule");
+        }
+        scheduleByRow = scheduleToRows(scheduleByDay!);
         // persist the new schedule
         await axios.post("/api/active/schedule", { schedule: scheduleByRow });
         // update the period boundary

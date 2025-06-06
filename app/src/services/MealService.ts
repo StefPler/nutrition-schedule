@@ -1,4 +1,4 @@
-import { pickRandomFoodFromCategory } from "@/src/helpers/util";
+import { pickFoodFromId, pickRandomFoodFromCategory } from "@/src/helpers/util";
 import { DailySchedule, WeeklySchedule } from "@/src/types/period";
 
 const createMondaySchedule = (): DailySchedule => {
@@ -109,6 +109,69 @@ export const createWeeklySchedule = (): WeeklySchedule => {
   };
 
   diversifyRepeatingMeals(schedule);
+
+  return schedule;
+};
+
+export const createStaticWeeklySchedule = (): WeeklySchedule => {
+  let schedule: WeeklySchedule = {
+    Monday: {
+      // τσικεν ντει
+      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 14), // Chicken + rice + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 5), // Salad
+    },
+    Tuesday: {
+      // παστα ντει
+      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 15), // Μπιφ + pasta + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 6), //  Μπιφ + pasta + salad
+    },
+    Wednesday: {
+      // λεντιλ ντει
+      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 16), // Lentils
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 4), // ομελετ + βετζ
+    },
+    Thursday: {
+      // μπιφτεκι ντει
+      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 8), // Chicken + ποτατο + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 7), // Chicken + ποτατο + salad
+    },
+    Friday: {
+      // αρακασ ντει
+      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 17), // αρακας + rice + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 4), // ομελετ + βετζ
+    },
+    Saturday: {
+      // φρι μιντ ντει
+      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 18), // Fish + rice + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 8), // Salad
+    },
+    Sunday: {
+      // μορ παστα γιαααασ
+      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
+      snack1: pickFoodFromId("snack1", 3), // Yogurt
+      lunch: pickFoodFromId("lunch", 19), // Chicken + rice + salad
+      snack2: pickFoodFromId("snack2", 2), // Μπάρα
+      dinner: pickFoodFromId("dinner", 9), // Chicken + rice + salad
+    },
+  };
 
   return schedule;
 };
