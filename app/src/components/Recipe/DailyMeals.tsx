@@ -25,7 +25,8 @@ export const DailyMeals = () => {
   return (
     <Flex justify={{ xs: "center", sm: "center", lg: "between" }} wrap="wrap">
       <RecipeCard
-        meal="Breakfast"
+        isLoading={isLoading}
+        meal="Πρωινό"
         name={breakfast?.name!}
         description={breakfast?.description!}
         badges={[breakfast?.category!]}
@@ -33,7 +34,8 @@ export const DailyMeals = () => {
         execution={breakfast?.instructions!}
       />
       <RecipeCard
-        meal="Lunch"
+        isLoading={isLoading}
+        meal="Μεσημεριανό"
         name={lunch?.name!}
         description={lunch?.description!}
         badges={[lunch?.category!]}
@@ -41,7 +43,8 @@ export const DailyMeals = () => {
         execution={lunch?.instructions!}
       />
       <RecipeCard
-        meal="Dinner"
+        isLoading={isLoading}
+        meal="Βραδινό"
         name={dinner?.name!}
         description={dinner?.description!}
         badges={[dinner?.category!]}

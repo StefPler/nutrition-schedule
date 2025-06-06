@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 
 export const RecipeCard = ({
+  isLoading,
   meal,
   name,
   description,
@@ -23,6 +24,7 @@ export const RecipeCard = ({
   ingredients,
   execution,
 }: {
+  isLoading: boolean;
   meal: string;
   name: string;
   description: string;
@@ -36,8 +38,8 @@ export const RecipeCard = ({
     setActiveTab(event);
   };
   return (
-    <Box maxWidth="380px">
-      <Skeleton loading={!meal}>
+    <Box width="380px">
+      <Skeleton loading={isLoading}>
         <Heading size="8" color="cyan" className="mb-2 text-center">
           {meal}
         </Heading>
@@ -56,16 +58,25 @@ export const RecipeCard = ({
             }}
           />
         </Inset>
-        <Skeleton loading={!name} width="300px" className="mb-2" height="20px">
+        {!isLoading && !name && (
+          <Text size="4" align="center" className="mt-2">
+            Δεν βρέθηκε συνταγή για το {meal.toLocaleLowerCase()}
+          </Text>
+        )}
+        <Skeleton
+          loading={isLoading}
+          width="300px"
+          className="mb-2"
+          height="20px">
           <Text size="4" align="center" weight="bold" className="mt-2">
             {name}
           </Text>
         </Skeleton>
-        <Skeleton loading={!description} width="350px" height="60px">
+        <Skeleton loading={isLoading} width="350px" height="60px">
           <ScrollArea
             className=""
             scrollbars="vertical"
-            type="always"
+            type="auto"
             style={{ height: 50 }}>
             <Text as="p" size="3">
               {description}
@@ -73,7 +84,7 @@ export const RecipeCard = ({
           </ScrollArea>
         </Skeleton>
         <Box className="flex-row">
-          <Skeleton loading={!badges}>
+          <Skeleton loading={isLoading}>
             {badges?.map((badge, idx) => (
               <Badge className="mt-4" key={idx}>
                 {badge}
@@ -95,36 +106,36 @@ export const RecipeCard = ({
           <ScrollArea
             className=""
             scrollbars="vertical"
-            type="always"
+            type="auto"
             style={{ height: 480 }}>
             <Box className=" max-w-80">
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="250px"
                 height="20px"
                 className="pb-1 mt-1"></Skeleton>
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="200px"
                 height="20px"
                 className=" mt-1"></Skeleton>
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="160px"
                 height="20px"
                 className=" mt-1"></Skeleton>
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="140px"
                 height="20px"
                 className=" mt-1"></Skeleton>
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="215px"
                 height="20px"
                 className=" mt-1"></Skeleton>
               <Skeleton
-                loading={!ingredients}
+                loading={isLoading}
                 width="115px"
                 height="20px"
                 className=" mt-1"></Skeleton>
