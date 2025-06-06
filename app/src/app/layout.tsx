@@ -28,7 +28,7 @@ export default function RootLayout({ children }: ChildrenProps) {
             hasBackground={true}
             panelBackground="translucent"
             className="bg-gradient-to-r from-teal-100 to-yellow-100 ">
-            <ThemePanel />
+            {process.env.NODE_ENV === "development" && <ThemePanel />}
             <Navbar>{children}</Navbar>
           </Theme>
         </Providers>
