@@ -1,0 +1,8 @@
+services:
+  nutrition-schedule:
+    build:
+      context: .
+    container_name: nutrition-schedule
+    ports:
+      - "3000:3000"
+    restart: always
