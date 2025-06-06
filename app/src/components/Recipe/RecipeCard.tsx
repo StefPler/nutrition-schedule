@@ -37,7 +37,7 @@ export const RecipeCard = ({
   };
   return (
     <Box maxWidth="380px">
-      <Skeleton loading={!name}>
+      <Skeleton loading={!meal}>
         <Heading size="8" color="cyan" className="mb-2 text-center">
           {meal}
         </Heading>
