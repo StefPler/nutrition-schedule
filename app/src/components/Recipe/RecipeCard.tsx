@@ -144,7 +144,10 @@ export const RecipeCard = ({
                 <ul>
                   {ingredients?.map((ingredient, idx) => (
                     <li className="py-1" key={idx}>
-                      <Text align="center" className="p-1 text-black" size="3">
+                      <Text
+                        align="center"
+                        className="p-1 text-slate-500"
+                        size="3">
                         {ingredient}
                         <br />
                       </Text>
@@ -154,7 +157,7 @@ export const RecipeCard = ({
               )}
               {activeTab === "exec" &&
                 execution?.map((step, idx) => (
-                  <Text align="right" className="" key={idx}>
+                  <Text align="right" className="text-slate-500" key={idx}>
                     <Strong>{idx + 1}.</Strong> {step}
                     <br />
                     <br />

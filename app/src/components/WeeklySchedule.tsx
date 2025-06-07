@@ -48,7 +48,7 @@ export const WeeklySchedule = () => {
   return (
     weeklySchedule?.byRow && (
       <div className="">
-        <Table.Root className="border-2 rounded-xl border-slate-500 border-separate bg-transparent">
+        <Table.Root className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-r from-yellow-100 to-teal-100 ">
           <Table.Header className="">
             <Table.Row className="">
               {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
@@ -108,21 +108,29 @@ export const WeeklySchedule = () => {
             <WeeklyMealRow
               meal="Πρωινό"
               foods={weeklySchedule.byRow.breakfast}
+              currentDay={day}
             />
             <WeeklyMealRow
               meal="Πρόγευμα"
               foods={weeklySchedule.byRow.snack1}
+              currentDay={day}
             />
             <WeeklyMealRow
               meal="Μεσημεριανό"
               foods={weeklySchedule.byRow.lunch}
+              currentDay={day}
               // callback={rerollMeal}
             />
             <WeeklyMealRow
               meal="Απογευματινό"
               foods={weeklySchedule.byRow.snack2}
+              currentDay={day}
             />
-            <WeeklyMealRow meal="Βραδινό" foods={weeklySchedule.byRow.dinner} />
+            <WeeklyMealRow
+              meal="Βραδινό"
+              foods={weeklySchedule.byRow.dinner}
+              currentDay={day}
+            />
           </Table.Body>
         </Table.Root>
       </div>

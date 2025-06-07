@@ -3,6 +3,7 @@ import React from "react";
 import { Table } from "@radix-ui/themes";
 import { Category, FoodEntry } from "@/src/types/foods";
 import { Meal } from "@/src/types/period";
+import clsx from "clsx";
 
 const NewlineText = (text: string) => {
   const newText = text.split("\n").map((str, i) => (
@@ -17,10 +18,12 @@ const NewlineText = (text: string) => {
 export const WeeklyMealRow = ({
   meal,
   foods,
+  currentDay,
   callback,
 }: {
   meal: string;
   foods: FoodEntry[];
+  currentDay: number;
   callback?: (meal: Meal, category: Category, index: number) => void;
 }) => {
   const invokeIfFun = (meal: Meal, category: Category, index: number) => {
@@ -36,9 +39,13 @@ export const WeeklyMealRow = ({
         </TableCell> */}
         {foods?.map((food, index) => (
           <Table.Cell
-            className={`border-slate-400 content-start hover:bg-slate-200 ${
-              index != 6 ? "border-r-[1px]" : ""
-            } ${meal != "Βραδινό" ? "border-b-[1px]" : ""}`}
+            className={clsx(
+              "border-slate-400 content-start hover:bg-slate-200",
+              index != 6 && "border-r-[1px]",
+              meal != "Βραδινό" && "border-b-[1px]",
+              index === currentDay - 1 &&
+                "border-l-2 border-r-2 border-slate-400"
+            )}
             key={index}>
             <p className="flex place-content-between font-semibold text-slate-600 border-b-[1px] border-slate-600 border-dashed pb-1">
               <span> {meal} </span>
