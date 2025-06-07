@@ -51,6 +51,38 @@ export const pickFoodFromId = (meal: Meal, id: number): FoodEntry => {
   return food;
 };
 
+export const getAlternatives = (
+  meal: Meal,
+  excludeId: number,
+  category?: Category
+): FoodEntry[] => {
+  switch (meal) {
+    case "breakfast":
+      return breakfast.filter(
+        (food) =>
+          food.id !== excludeId && food.category.includes(category ?? "")
+      );
+    case "snack1":
+    case "snack2":
+      return snacks.filter(
+        (food) =>
+          food.id !== excludeId && food.category.includes(category ?? "")
+      );
+    case "lunch":
+      return lunch.filter(
+        (food) =>
+          food.id !== excludeId && food.category.includes(category ?? "")
+      );
+    case "dinner":
+      return dinner.filter(
+        (food) =>
+          food.id !== excludeId && food.category.includes(category ?? "")
+      );
+    default:
+      throw new Error("Meal not found");
+  }
+};
+
 export const scheduleToRows = (
   schedule: WeeklySchedule
 ): WeeklyScheduleRows => {
