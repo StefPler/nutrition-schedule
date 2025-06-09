@@ -14,7 +14,7 @@ export const WeeklySchedule = () => {
   const [day, setDay] = useState(new Date().getDay());
 
   const highlightDay = (selection: DaysEnum) => {
-    return selection === day ? "bg-slate-200 rounded-md" : "";
+    return selection === day ? "bg-slate-200 rounded-xl" : "";
   };
 
   if (isLoading)

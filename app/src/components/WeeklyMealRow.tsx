@@ -74,9 +74,9 @@ export const WeeklyMealRow = ({
             className={clsx(
               "border-slate-400 content-start hover:bg-slate-200",
               index != 6 && "border-r-[1px]",
-              meal != "Βραδινό" && "border-b-[1px]",
-              index === currentDay - 1 &&
-                "border-l-2 border-r-2 border-slate-400"
+              meal != "Βραδινό" && "border-b-[1px]"
+              // index === currentDay - 1 &&
+              //   "border-l-2 border-r-2 border-slate-400"
             )}
             key={index}>
             <div className="flex place-content-between items-center font-semibold text-slate-600 border-b-[1px] border-slate-600 border-dashed pb-1">
