@@ -22,9 +22,9 @@ import { getAlternatives } from "../helpers/util";
 
 const NewlineText = (text: string) => {
   const newText = text.split("\n").map((str, i) => (
-    <p className="pt-1" key={i}>
+    <Box className="pt-1" key={i}>
       - {str}
-    </p>
+    </Box>
   ));
 
   return newText;
@@ -89,38 +89,26 @@ export const WeeklyMealRow = ({
                     </IconButton>
                   </Dialog.Trigger>
                 </Tooltip>
-                <Dialog.Content
-                  minWidth="360px"
-                  maxWidth="700px"
-                  className="bg-teal-100">
+                <Dialog.Content minWidth="360px" maxWidth="700px" className="bg-teal-100">
                   <Dialog.Title className="text-center">
                     Εναλλακτικά γεύματα για {meal.toLocaleLowerCase()}
                   </Dialog.Title>
                   <Dialog.Description className="flex flex-col">
                     <Text className="text-center">
-                      Γεύματα τα οποία μπορούν να αντικαταστήσουν το σημερινό
-                      μενού προσφέροντας αντίστοιχη διατροφική αξία με το αρχικό
-                      πλάνο.
+                      Γεύματα τα οποία μπορούν να αντικαταστήσουν το σημερινό μενού προσφέροντας αντίστοιχη διατροφική
+                      αξία με το αρχικό πλάνο.
                     </Text>
                     <Flex direction="row" gap="2" justify="between">
                       <Badge size="3">{DaysEnum[(index + 1) % 7]}</Badge>
-                      <Badge size="3">
-                        {food.category.split("_").join(" ")}
-                      </Badge>
+                      <Badge size="3">{food.category.split("_").join(" ")}</Badge>
                     </Flex>
                   </Dialog.Description>
 
                   <ScrollArea type="auto" className="py-4">
                     <Flex direction={"column"} gap="3">
-                      {getAlternatives(
-                        greekNameToMeal(meal),
-                        food.id,
-                        food.category
-                      ).map((foodEntry, index) => (
+                      {getAlternatives(greekNameToMeal(meal), food.id, food.category).map((foodEntry, index) => (
                         <Card key={index} className="bg-yellow-100">
-                          <Strong className="text-slate-600">
-                            Επιλογή {index + 2}
-                          </Strong>
+                          <Strong className="text-slate-600">Επιλογή {index + 2}</Strong>
                           <Text>{NewlineText(foodEntry.description)}</Text>
                         </Card>
                       ))}

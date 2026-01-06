@@ -28,6 +28,13 @@ export const Navbar = ({ children }: ChildrenProps) => {
                 </Text>
               </Link>
             </TabNav.Link>
+            <TabNav.Link asChild={true} active={pathname === "/calculator"}>
+              <Link href="/calculator">
+                <Text size="4" weight="bold">
+                  Υπολογιστής
+                </Text>
+              </Link>
+            </TabNav.Link>
           </TabNav.Root>
         </div>
 

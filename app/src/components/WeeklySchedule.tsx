@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Table } from "@radix-ui/themes";
+import { Table, Text } from "@radix-ui/themes";
 // import { useSchedule } from "@/src/hooks/useSchedule";
 import { WeeklyMealRow } from "./WeeklyMealRow";
 import { Circles } from "react-loader-spinner";
@@ -29,10 +29,9 @@ export const WeeklySchedule = () => {
           wrapperClass=""
           visible={true}
         />
-        <p className="font-semibold text-lg px-2">
-          {" "}
-          Τα γεύματα προετοιμάζονται{" "}
-        </p>{" "}
+        <Text align="center" className="font-semibold text-lg px-2">
+          Τα γεύματα προετοιμάζονται
+        </Text>
         <Circles
           height="40"
           width="40"
@@ -48,21 +47,22 @@ export const WeeklySchedule = () => {
   return (
     weeklySchedule?.byRow && (
       <div className="">
-        <Table.Root className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-r from-yellow-100 to-teal-100 ">
+        <Table.Root
+          layout="auto"
+          variant="ghost"
+          className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-r from-yellow-100 to-teal-100 ">
           <Table.Header className="">
             <Table.Row className="">
               {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
               <Table.RowHeaderCell
                 className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Monday)
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Monday)
                 }>
                 Δευτέρα
               </Table.RowHeaderCell>
               <Table.RowHeaderCell
                 className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Tuesday)
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Tuesday)
                 }>
                 Τρίτη
               </Table.RowHeaderCell>
@@ -82,8 +82,7 @@ export const WeeklySchedule = () => {
               </Table.RowHeaderCell>
               <Table.RowHeaderCell
                 className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Friday)
+                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Friday)
                 }>
                 Παρασκευή
               </Table.RowHeaderCell>
@@ -95,42 +94,23 @@ export const WeeklySchedule = () => {
                 Σάββατο
               </Table.RowHeaderCell>
               <Table.RowHeaderCell
-                className={
-                  "border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Sunday)
-                }>
+                className={"border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Sunday)}>
                 Κυριακή
               </Table.RowHeaderCell>
               {/* <TableHead className="text-right">Amount</TableHead> */}
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            <WeeklyMealRow
-              meal="Πρωινό"
-              foods={weeklySchedule.byRow.breakfast}
-              currentDay={day}
-            />
-            <WeeklyMealRow
-              meal="Πρόγευμα"
-              foods={weeklySchedule.byRow.snack1}
-              currentDay={day}
-            />
+            <WeeklyMealRow meal="Πρωινό" foods={weeklySchedule.byRow.breakfast} currentDay={day} />
+            <WeeklyMealRow meal="Πρόγευμα" foods={weeklySchedule.byRow.snack1} currentDay={day} />
             <WeeklyMealRow
               meal="Μεσημεριανό"
               foods={weeklySchedule.byRow.lunch}
               currentDay={day}
               // callback={rerollMeal}
             />
-            <WeeklyMealRow
-              meal="Απογευματινό"
-              foods={weeklySchedule.byRow.snack2}
-              currentDay={day}
-            />
-            <WeeklyMealRow
-              meal="Βραδινό"
-              foods={weeklySchedule.byRow.dinner}
-              currentDay={day}
-            />
+            <WeeklyMealRow meal="Απογευματινό" foods={weeklySchedule.byRow.snack2} currentDay={day} />
+            <WeeklyMealRow meal="Βραδινό" foods={weeklySchedule.byRow.dinner} currentDay={day} />
           </Table.Body>
         </Table.Root>
       </div>
