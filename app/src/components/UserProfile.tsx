@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useStorage } from "../hooks/useStorage";
 import { UserProfile as UserProfileT } from "../types/userProfile";
 import { macroCalculator } from "../services/CalculatorService";
-import { Box, Card, Flex, Separator, Text } from "@radix-ui/themes";
+import { Box, Card, Flex, Separator, Spinner, Text } from "@radix-ui/themes";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { MacroForm } from "./MacroForm";
@@ -10,7 +10,7 @@ import { MacroForm } from "./MacroForm";
 export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
-    getItem: { data: userProfile },
+    getItem: { data: userProfile, isLoading },
   } = useStorage<UserProfileT>("userProfile");
 
   let macros;
@@ -22,13 +22,14 @@ export const UserProfile = () => {
     <Card>
       <Collapsible className="" onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
         <CollapsibleTrigger className="w-full">
-          <Flex justify="between" p="2">
+          <Flex className="justify-between flex-row " p="1">
             <Box className="flex flex-col space-y-2">
               <Text align="left" size={"4"} weight="bold" className="text-slate-600">
                 Ημερήσιοι Διατροφικοί Στόχοι
               </Text>
-              {!macros && (
-                <Text className="">Παρακαλώ συμπληρώστε το προφίλ σας για να δείτε τους διατροφικούς στόχους.</Text>
+              {!macros && isLoading && <Spinner />}
+              {!macros && !isLoading && (
+                <Text className="">Συμπληρώστε το προφίλ σας για να δείτε τους διατροφικούς στόχους!</Text>
               )}
               {macros && (
                 <Flex align="start" className="md:space-x-6 flex-col md:flex-row">
@@ -55,7 +56,7 @@ export const UserProfile = () => {
                 </Flex>
               )}
             </Box>
-            <Box className="self-center flex flex-row space-x-1">
+            <Box className="self-start xs:self-center flex flex-row space-x-1">
               <Text weight="medium" color="cyan">
                 Ενημέρωση Προφίλ
               </Text>
