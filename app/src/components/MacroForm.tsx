@@ -25,15 +25,25 @@ type FormWeightLossPerWeek = "Maintain" | "QuarterKg" | "HalfKg" | "OneKg";
 type FormActivityLevel = "Sedentary" | "LightlyActive" | "ModeratelyActive" | "VeryActive";
 
 const FormSchema = z.object({
-  weight: z.number({ coerce: true, invalid_type_error: "Input should be a number" }).gt(0, {
-    message: "Το βάρος πρέπει να είναι μεγαλύτερο του 0",
-  }),
-  height: z.number({ coerce: true, invalid_type_error: "Input should be a number" }).gt(0, {
-    message: "Το ύψος πρέπει να είναι μεγαλύτερο του 0",
-  }),
-  age: z.number({ coerce: true, invalid_type_error: "Input should be a number" }).int().gt(0, {
-    message: "Η ηλικία πρέπει να είναι μεγαλύτερη του 0",
-  }),
+  weight: z
+    .number({ coerce: true, invalid_type_error: "Input should be a number" })
+    .gt(0, {
+      message: "Το βάρος πρέπει να είναι μεγαλύτερο του 0",
+    })
+    .lt(500, { message: "Το βάρος πρέπει να είναι μικρότερο του 500" }),
+  height: z
+    .number({ coerce: true, invalid_type_error: "Input should be a number" })
+    .gt(0, {
+      message: "Το ύψος πρέπει να είναι μεγαλύτερο του 0",
+    })
+    .lt(250, { message: "Το ύψος πρέπει να είναι μικρότερο του 250" }),
+  age: z
+    .number({ coerce: true, invalid_type_error: "Input should be a number" })
+    .int()
+    .gt(0, {
+      message: "Η ηλικία πρέπει να είναι μεγαλύτερη του 0",
+    })
+    .lt(100, { message: "Η ηλικία πρέπει να είναι μικρότερη απο 100" }),
   gender: z.enum(["male", "female"], {
     required_error: "Can not be empty",
     message: "Invalid gender",
@@ -105,7 +115,7 @@ export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) =>
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="">
-        <div className="grid grid-cols-3 gap-4 pb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-4">
           <FormField
             control={form.control}
             name="weight"
@@ -159,7 +169,7 @@ export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) =>
                     <Select.Trigger className="flex h-10 rounded-md" placeholder="π.χ: Αρσενικό" />
                     <Select.Content position="popper">
                       <Select.Item value="male">Αρσενικό</Select.Item>
-                      <Select.Item value="female">Θυλικό</Select.Item>
+                      <Select.Item value="female">Θηλυκό</Select.Item>
                     </Select.Content>
                   </Select.Root>
                 </FormControl>

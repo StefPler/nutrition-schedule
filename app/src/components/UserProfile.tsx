@@ -31,7 +31,7 @@ export const UserProfile = () => {
                 <Text className="">Παρακαλώ συμπληρώστε το προφίλ σας για να δείτε τους διατροφικούς στόχους.</Text>
               )}
               {macros && (
-                <Flex wrap="wrap" justify="start" className="space-x-6">
+                <Flex align="start" className="md:space-x-6 flex-col md:flex-row">
                   <Box className="space-x-1">
                     <Text weight="medium">{macros.dailyCalories}</Text>
                     <Text weight="medium">Cal</Text>
