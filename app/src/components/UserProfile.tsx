@@ -22,7 +22,7 @@ export const UserProfile = () => {
     <Card>
       <Collapsible className="" onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
         <CollapsibleTrigger className="w-full">
-          <Flex className="justify-between flex-row " p="1">
+          <Flex className="justify-between flex-row" p="1">
             <Box className="flex flex-col space-y-2">
               <Text align="left" size={"4"} weight="bold" className="text-slate-600">
                 Ημερήσιοι Διατροφικοί Στόχοι

@@ -72,7 +72,7 @@ export const WeeklyMealRow = ({
         {foods?.map((food, index) => (
           <Table.Cell
             className={clsx(
-              "border-slate-400 content-start hover:bg-slate-200",
+              "border-slate-400 content-start hover:bg-slate-200/50",
               index != 6 && "border-r-[1px]",
               meal != "Βραδινό" && "border-b-[1px]"
               // index === currentDay - 1 &&

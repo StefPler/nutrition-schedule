@@ -1,6 +1,7 @@
 import { ActivityLevel, Gender, UserProfile, WeightLossPerWeek } from "../types/userProfile";
 
 export const ReferenceBMIData = {
+  underweight: "<18.5 kg/m^2",
   healthyRange: "18.5 - 25 kg/m^2",
   overweight: "25 - 30 kg/m^2",
   obeseI: "30 - 35 kg/m^2",
