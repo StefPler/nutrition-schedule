@@ -11,7 +11,6 @@ export const Navbar = ({ children }: ChildrenProps) => {
   return (
     <>
       <div className="relative w-full h-full flex-col">
-        {/* <div className="sticky top-0 flex w-full h-full bg-primary p-5 space-x-4 justify-between items-center text-white"> */}
         <div>
           <TabNav.Root justify="center" color="green">
             <TabNav.Link asChild={true} active={pathname === "/"}>

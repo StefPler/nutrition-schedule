@@ -50,7 +50,7 @@ export const WeeklySchedule = () => {
         <Table.Root
           layout="auto"
           variant="ghost"
-          className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-r from-yellow-100 to-teal-100 ">
+          className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-br from-green-200 to-teal-100 ">
           <Table.Header className="">
             <Table.Row className="">
               {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}

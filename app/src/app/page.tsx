@@ -24,6 +24,7 @@ export default function Home() {
       </div> */}
       {/* <Container> */}
 
+      <Section size="1" />
       <Heading className="text-center" size="6">
         <Text color="cyan">{date.getHours() > 12 ? "✨ Καλήν σας εσπέρα ✨" : "🌸 Καλήν σας ημέρα 🌸"}</Text>
         {/* <Text>Στέφανε!</Text> */}
