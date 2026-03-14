@@ -1,171 +1,132 @@
 "use client";
-import {
-  Flex,
-  Badge,
-  Box,
-  Card,
-  Inset,
-  ScrollArea,
-  SegmentedControl,
-  Separator,
-  Text,
-  Strong,
-  Skeleton,
-  Heading,
-} from "@radix-ui/themes";
-import { useState } from "react";
+import { Box, Card, Inset, Skeleton, Text } from "@radix-ui/themes";
+import { Clock } from "lucide-react";
+
+type MacroData = {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+};
+
+const MACRO_ICONS: Record<keyof MacroData, string> = {
+  calories: "🔥 ",
+  protein: "🥩 ",
+  carbs: "🌾 ",
+  fat: "💧 ",
+};
+
+const MACRO_LABELS: Record<keyof MacroData, string> = {
+  calories: " cal",
+  protein: "g protein",
+  carbs: "g carbs",
+  fat: "g fat",
+};
 
 export const RecipeCard = ({
   isLoading,
   meal,
   name,
-  description,
-  badges,
+  description: _description,
   ingredients,
   execution,
+  preparationTime = 20,
+  macros,
 }: {
   isLoading: boolean;
   meal: string;
   name: string;
   description: string;
-  badges: string[];
+  badges?: string[];
   ingredients: string[];
   execution: string[];
+  preparationTime?: number;
+  macros?: MacroData;
 }) => {
-  const [activeTab, setActiveTab] = useState("ingr");
-
-  const handleActiveTabChange = (event: any) => {
-    setActiveTab(event);
-  };
   return (
-    <Box width="380px">
-      <Skeleton loading={isLoading}>
-        <Heading size="8" color="cyan" className="mb-2 text-center">
-          {meal}
-        </Heading>
-      </Skeleton>
-      <Card size="2" className="shadow-lg">
+    <Box className="w-full">
+      <Card size="2" className="shadow-md overflow-hidden">
+        {/* Gradient header */}
         <Inset clip="padding-box" side="top" pb="current">
-          <img
-            src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Bold typography"
-            style={{
-              display: "block",
-              objectFit: "cover",
-              width: "100%",
-              height: 140,
-              backgroundColor: "var(--gray-5)",
-            }}
-          />
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-400 px-5 py-4 flex justify-between items-start gap-4">
+            <div className="flex-1 min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-wider text-white/80 block">{meal}</span>
+              <Skeleton className="rounded-xl" loading={isLoading}>
+                <p className="font-bold text-xl text-white mt-0.5 leading-snug">{name || "..."}</p>
+              </Skeleton>
+            </div>
+            <div className="flex items-center self-center gap-1.5 text-white/90 text-sm flex-shrink-0 mt-1">
+              <Clock size={14} />
+              <span>{preparationTime} min</span>
+            </div>
+          </div>
         </Inset>
-        {!isLoading && !name && (
-          <Text size="4" align="center" className="mt-2">
-            Δεν βρέθηκε συνταγή για το {meal.toLocaleLowerCase()}
-          </Text>
-        )}
-        <Skeleton
-          loading={isLoading}
-          width="300px"
-          className="mb-2"
-          height="20px">
-          <Text size="4" align="center" weight="bold" className="mt-2">
-            {name}
-          </Text>
-        </Skeleton>
-        <Skeleton loading={isLoading} width="350px" height="60px">
-          <ScrollArea
-            className=""
-            scrollbars="vertical"
-            type="auto"
-            style={{ height: 50 }}>
-            <Text as="p" size="3">
-              {description}
+
+        {/* Card body */}
+        <div className="px-5 pt-4 pb-5">
+          {/* Missing recipe message */}
+          {!isLoading && !name && (
+            <Text size="3" className="text-slate-400 italic block mb-3">
+              Δεν βρέθηκε συνταγή για το {meal.toLocaleLowerCase()}
             </Text>
-          </ScrollArea>
-        </Skeleton>
-        <Box className="flex-row">
-          <Skeleton loading={isLoading}>
-            {badges?.map((badge, idx) => (
-              <Badge className="mt-4" key={idx}>
-                {badge}
-              </Badge>
-            ))}
-          </Skeleton>
-        </Box>
-        <Separator orientation="horizontal" my="3" size="4"></Separator>
-        <Flex justify="center" direction="column">
-          <SegmentedControl.Root
-            onValueChange={handleActiveTabChange}
-            defaultValue="ingr"
-            size="3"
-            className="mb-1 shadow-lg">
-            <SegmentedControl.Item value="ingr">Υλικά</SegmentedControl.Item>
-            <SegmentedControl.Item value="exec">Εκτέλεση</SegmentedControl.Item>
-          </SegmentedControl.Root>
+          )}
 
-          <ScrollArea
-            className=""
-            scrollbars="vertical"
-            type="auto"
-            style={{ height: 480 }}>
-            <Box className=" max-w-80">
-              <Skeleton
-                loading={isLoading}
-                width="250px"
-                height="20px"
-                className="pb-1 mt-1"></Skeleton>
-              <Skeleton
-                loading={isLoading}
-                width="200px"
-                height="20px"
-                className=" mt-1"></Skeleton>
-              <Skeleton
-                loading={isLoading}
-                width="160px"
-                height="20px"
-                className=" mt-1"></Skeleton>
-              <Skeleton
-                loading={isLoading}
-                width="140px"
-                height="20px"
-                className=" mt-1"></Skeleton>
-              <Skeleton
-                loading={isLoading}
-                width="215px"
-                height="20px"
-                className=" mt-1"></Skeleton>
-              <Skeleton
-                loading={isLoading}
-                width="115px"
-                height="20px"
-                className=" mt-1"></Skeleton>
+          {/* Macro badges */}
+          {macros && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {(Object.keys(macros) as (keyof MacroData)[]).map((key) => (
+                <span
+                  key={key}
+                  className="inline-flex items-center gap-1 bg-slate-100 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-full">
+                  {MACRO_ICONS[key]}
+                  {macros[key]}
+                  {MACRO_LABELS[key]}
+                </span>
+              ))}
+            </div>
+          )}
 
-              {activeTab === "ingr" && (
-                <ul>
+          {/* Ingredients + Instructions
+              – grid-cols-2 side-by-side on desktop (md+)
+              – single column stacked on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Ingredients */}
+            <div>
+              <Skeleton loading={isLoading} height="18px" width="80px" className="mb-2 rounded-xl">
+                <p className="font-bold text-slate-700 text-sm mb-2">Υλικά</p>
+              </Skeleton>
+              <Skeleton loading={isLoading} height="120px" className="rounded-xl">
+                <ol className="space-y-1">
                   {ingredients?.map((ingredient, idx) => (
-                    <li className="py-1" key={idx}>
-                      <Text
-                        align="center"
-                        className="p-1 text-slate-500"
-                        size="3">
-                        {ingredient}
-                        <br />
-                      </Text>
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-emerald-500 mt-0.5 flex-shrink-0 font-bold text-base leading-none">•</span>
+                      <span className="text-slate-600 text-sm">{ingredient}</span>
                     </li>
                   ))}
-                </ul>
-              )}
-              {activeTab === "exec" &&
-                execution?.map((step, idx) => (
-                  <Text align="right" className="text-slate-500" key={idx}>
-                    <Strong>{idx + 1}.</Strong> {step}
-                    <br />
-                    <br />
-                  </Text>
-                ))}
-            </Box>
-          </ScrollArea>
-        </Flex>
+                </ol>
+              </Skeleton>
+            </div>
+
+            {/* Instructions */}
+            <div>
+              <Skeleton loading={isLoading} height="18px" width="80px" className="mb-2 rounded-xl">
+                <p className="font-bold text-slate-700 text-sm mb-2">Εκτέλεση</p>
+              </Skeleton>
+              <Skeleton loading={isLoading} height="120px" className="rounded-xl">
+                <ol className="space-y-2">
+                  {execution?.map((step, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        {idx + 1}
+                      </span>
+                      <span className="text-slate-600 text-sm leading-snug">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </Skeleton>
+            </div>
+          </div>
+        </div>
       </Card>
     </Box>
   );

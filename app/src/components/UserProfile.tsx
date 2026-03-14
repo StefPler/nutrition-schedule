@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useStorage } from "../hooks/useStorage";
 import { UserProfile as UserProfileT } from "../types/userProfile";
 import { macroCalculator } from "../services/CalculatorService";
-import { Box, Card, Flex, Separator, Spinner, Text } from "@radix-ui/themes";
+import { Badge, Card, Flex, Separator, Spinner } from "@radix-ui/themes";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, User } from "lucide-react";
 import { MacroForm } from "./MacroForm";
+import { DailyProgress } from "./DailyProgress";
 
 export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,59 +14,65 @@ export const UserProfile = () => {
     getItem: { data: userProfile, isLoading },
   } = useStorage<UserProfileT>("userProfile");
 
-  let macros;
-  if (userProfile) {
-    macros = macroCalculator(userProfile);
-  }
+  const macros = userProfile ? macroCalculator(userProfile) : undefined;
 
   return (
-    <Card>
-      <Collapsible className="" onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
-        <CollapsibleTrigger className="w-full">
-          <Flex className="justify-between flex-row" p="1">
-            <Box className="flex flex-col space-y-2">
-              <Text align="left" size={"4"} weight="bold" className="text-slate-600">
-                Ημερήσιοι Διατροφικοί Στόχοι
-              </Text>
-              {!macros && isLoading && <Spinner />}
-              {!macros && !isLoading && (
-                <Text className="">Συμπληρώστε το προφίλ σας για να δείτε τους διατροφικούς στόχους!</Text>
-              )}
-              {macros && (
-                <Flex align="start" className="md:space-x-6 flex-col md:flex-row">
-                  <Box className="space-x-1">
-                    <Text weight="medium">{macros.dailyCalories}</Text>
-                    <Text weight="medium">Cal</Text>
-                  </Box>
-                  <Box className="space-x-1">
-                    <Text>{macros.protein}g</Text>
-                    <Text weight="light">πρωτεΐνη</Text>
-                  </Box>
-                  <Box className="space-x-1">
-                    <Text>{macros.fat}g</Text>
-                    <Text weight="light">λιπαρά</Text>
-                  </Box>
-                  <Box className="space-x-1">
-                    <Text>{macros.carbs}g</Text>
-                    <Text weight="light">υδατάνθρακα</Text>
-                  </Box>
-                  <Box className="space-x-1">
-                    <Text>{macros.fiber}g</Text>
-                    <Text weight="light">εδώδιμες ίνες</Text>
-                  </Box>
-                </Flex>
-              )}
-            </Box>
-            <Box className="self-start xs:self-center flex flex-row space-x-1">
-              <Text weight="medium" color="cyan">
-                Ενημέρωση Προφίλ
-              </Text>
-              {isOpen ? <ChevronUp color="green" /> : <ChevronDown color="green" />}
-            </Box>
-          </Flex>
+    <Card className="shadow-sm">
+      <Collapsible onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
+        <CollapsibleTrigger className="w-full text-left">
+          <div className="flex items-center justify-between gap-4 p-1">
+            {/* Left: avatar + title + macros */}
+            <div className="flex items-center gap-3 min-w-0">
+              {/* Avatar circle */}
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center flex-shrink-0">
+                <User size={20} className="text-white" />
+              </div>
+
+              <div className="min-w-0">
+                <p className="font-bold text-slate-700 text-base leading-tight">Ημερήσιοι Διατροφικοί Στόχοι</p>
+
+                {isLoading && <Spinner />}
+
+                {!macros && !isLoading && (
+                  <p className="text-slate-400 text-sm mt-0.5">
+                    Συμπληρώστε το προφίλ σας για να δείτε τους στόχους σας!
+                  </p>
+                )}
+
+                {macros && (
+                  <Flex gap="2" wrap="wrap" mt="1">
+                    <Badge color="green" size="2">
+                      {macros.dailyCalories} cal
+                    </Badge>
+                    <Badge color="blue" size="2">
+                      {macros.protein}g πρωτεΐνη
+                    </Badge>
+                    <Badge color="purple" size="2">
+                      {macros.carbs}g υδατάνθρακες
+                    </Badge>
+                    <Badge color="orange" size="2">
+                      {macros.fat}g λιπαρά
+                    </Badge>
+
+                    <Badge color="cyan" size="2">
+                      {macros.fiber}g ίνες
+                    </Badge>
+                  </Flex>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Edit Profile link */}
+            <div className="flex items-center gap-1 flex-shrink-0 text-emerald-600 hover:text-emerald-700 transition-colors">
+              <span className="font-medium text-sm">Ενημέρωση Προφίλ</span>
+              {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </div>
+          </div>
+          <DailyProgress />
         </CollapsibleTrigger>
-        <CollapsibleContent className="">
-          <Separator className="mb-2" size="4" />
+
+        <CollapsibleContent>
+          <Separator className="my-3" size="4" />
           <MacroForm updateCallback={() => setIsOpen(false)} />
         </CollapsibleContent>
       </Collapsible>

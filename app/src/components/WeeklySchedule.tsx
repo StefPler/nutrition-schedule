@@ -1,119 +1,113 @@
 "use client";
 import React, { useState } from "react";
 import { Table, Text } from "@radix-ui/themes";
-// import { useSchedule } from "@/src/hooks/useSchedule";
 import { WeeklyMealRow } from "./WeeklyMealRow";
+import { MobileWeeklySchedule } from "./MobileWeeklySchedule";
 import { Circles } from "react-loader-spinner";
 import { DaysEnum } from "../types/period";
 import { useGetSchedule } from "../hooks/useGetSchedule";
+import { useDailyCheckins } from "../hooks/useDailyCheckins";
 import clsx from "clsx";
+
+// Header cell shared styles
+const headerCell = (isCurrentDay: boolean) =>
+  clsx(
+    "text-center text-sm font-bold text-white py-3 border-r border-white/20 last:border-r-0",
+    isCurrentDay
+      ? "bg-white/20" // subtle highlight on current day header
+      : "bg-transparent",
+  );
 
 export const WeeklySchedule = () => {
   const { data: weeklySchedule, isLoading } = useGetSchedule();
-  // const { rerollMeal } = useSchedule();
-  const [day, setDay] = useState(new Date().getDay());
-
-  const highlightDay = (selection: DaysEnum) => {
-    return selection === day ? "bg-slate-200/70" : "";
-  };
+  const [day] = useState(new Date().getDay());
+  const { checkedMeals, toggle, todayDayName } = useDailyCheckins();
 
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-[80vh]">
-        <Circles
-          height="40"
-          width="40"
-          color="#4fa94d"
-          ariaLabel="circles-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
+        <Circles height="40" width="40" color="#4fa94d" ariaLabel="circles-loading" visible />
         <Text align="center" className="font-semibold text-lg px-2">
           Τα γεύματα προετοιμάζονται
         </Text>
-        <Circles
-          height="40"
-          width="40"
-          color="#4fa94d"
-          ariaLabel="circles-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
+        <Circles height="40" width="40" color="#4fa94d" ariaLabel="circles-loading" visible />
       </div>
     );
 
+  if (!weeklySchedule) return null;
+
   return (
-    weeklySchedule?.byRow && (
-      <div className="">
-        <Table.Root
-          layout="auto"
-          variant="ghost"
-          className="border-2 rounded-xl border-slate-500 border-separate bg-gradient-to-br from-green-200 to-teal-100 ">
-          <Table.Header className="">
-            <Table.Row className="">
-              {/* <TableHead className="font-bold border-r-[1px] border-slate-400">Γεύματα</TableHead> */}
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Monday)
-                }>
-                Δευτέρα
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Tuesday)
-                }>
-                Τρίτη
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Wednesday)
-                }>
-                Τετάρτη
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Thursday)
-                }>
-                Πέμπτη
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Friday)
-                }>
-                Παρασκευή
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={
-                  "border-r-[1px] border-b-[1px] border-slate-400 text-center text-lg " +
-                  highlightDay(DaysEnum.Saturday)
-                }>
-                Σάββατο
-              </Table.RowHeaderCell>
-              <Table.RowHeaderCell
-                className={"border-b-[1px] border-slate-400 text-center text-lg " + highlightDay(DaysEnum.Sunday)}>
-                Κυριακή
-              </Table.RowHeaderCell>
-              {/* <TableHead className="text-right">Amount</TableHead> */}
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <WeeklyMealRow meal="Πρωινό" foods={weeklySchedule.byRow.breakfast} currentDay={day} />
-            <WeeklyMealRow meal="Πρόγευμα" foods={weeklySchedule.byRow.snack1} currentDay={day} />
-            <WeeklyMealRow
-              meal="Μεσημεριανό"
-              foods={weeklySchedule.byRow.lunch}
-              currentDay={day}
-              // callback={rerollMeal}
-            />
-            <WeeklyMealRow meal="Απογευματινό" foods={weeklySchedule.byRow.snack2} currentDay={day} />
-            <WeeklyMealRow meal="Βραδινό" foods={weeklySchedule.byRow.dinner} currentDay={day} />
-          </Table.Body>
-        </Table.Root>
+    <>
+      {/* Mobile card view */}
+      <div className="md:hidden mx-4 pb-4">
+        <MobileWeeklySchedule />
       </div>
-    )
+
+      {/* Desktop table */}
+      {weeklySchedule.byRow && (
+        <div className="hidden md:block pb-6">
+          {/* White card wrapper */}
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-100">
+            <Table.Root layout="auto" variant="ghost" className="w-full">
+              <Table.Header>
+                {/* Gradient header row */}
+                <Table.Row className="bg-gradient-to-r from-emerald-600 to-teal-400">
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Monday)}>Δευτέρα</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Tuesday)}>Τρίτη</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Wednesday)}>Τετάρτη</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Thursday)}>Πέμπτη</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Friday)}>Παρασκευή</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Saturday)}>Σάββατο</Table.RowHeaderCell>
+                  <Table.RowHeaderCell className={headerCell(day === DaysEnum.Sunday)}>Κυριακή</Table.RowHeaderCell>
+                </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                <WeeklyMealRow
+                  meal="Πρωινό"
+                  foods={weeklySchedule.byRow.breakfast}
+                  currentDay={day}
+                  rowIndex={0}
+                  checkedMeals={checkedMeals}
+                  onToggle={toggle}
+                />
+                <WeeklyMealRow
+                  meal="Πρόγευμα"
+                  foods={weeklySchedule.byRow.snack1}
+                  currentDay={day}
+                  rowIndex={1}
+                  checkedMeals={checkedMeals}
+                  onToggle={toggle}
+                />
+                <WeeklyMealRow
+                  meal="Μεσημεριανό"
+                  foods={weeklySchedule.byRow.lunch}
+                  currentDay={day}
+                  rowIndex={2}
+                  checkedMeals={checkedMeals}
+                  onToggle={toggle}
+                />
+                <WeeklyMealRow
+                  meal="Απογευματινό"
+                  foods={weeklySchedule.byRow.snack2}
+                  currentDay={day}
+                  rowIndex={3}
+                  checkedMeals={checkedMeals}
+                  onToggle={toggle}
+                />
+                <WeeklyMealRow
+                  meal="Βραδινό"
+                  foods={weeklySchedule.byRow.dinner}
+                  currentDay={day}
+                  rowIndex={4}
+                  checkedMeals={checkedMeals}
+                  onToggle={toggle}
+                />
+              </Table.Body>
+            </Table.Root>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

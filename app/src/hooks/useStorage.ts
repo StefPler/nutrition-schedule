@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const storageKeys = {
   userProfile: "user-profile",
+  dailyCheckins: "daily-checkins",
 };
 
 export const useStorage = <T>(key: keyof typeof storageKeys) => {

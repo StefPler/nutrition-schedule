@@ -31,7 +31,7 @@ export default function RootLayout({ children }: ChildrenProps) {
             className="bg-gradient-to-br from-teal-100 to-green-200 ">
             {process.env.NODE_ENV === "development" && <ThemePanel />}
             <NavbarSticky />
-            <div className="max-w-[1600px] mx-auto">{children}</div>
+            <div className="max-w-[1400px] mx-auto">{children}</div>
           </Theme>
         </Providers>
       </body>

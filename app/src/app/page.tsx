@@ -1,46 +1,48 @@
-// import Image from "next/image";
 "use client";
 import { WeeklySchedule } from "@/src/components/WeeklySchedule";
 import { Heading, Section, Text } from "@radix-ui/themes";
 import { UserProfile } from "../components/UserProfile";
+import { UserProfileFab } from "../components/UserProfileFab";
+import { DailyProgress } from "../components/DailyProgress";
 
 export default function Home() {
   const date = new Date();
   return (
     <>
-      {/* <main className="flex min-h-screen items-center justify-between lg:p-10"> */}
-      {/* <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-            By{" "}Stefanel
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            /> 
-        </div>
-      </div> */}
-      {/* <Container> */}
+      {/* Page heading – mobile only */}
+      <div className="text-center px-4 mt-6 mb-1">
+        <Heading className="text-center" size="6">
+          <Text size="8" className="text-emerald-700 font-bold">
+            {date.getHours() > 12 ? "✨ Καλήν σας εσπέρα ✨" : "🌸 Καλήν σας ημέρα 🌸"}
+          </Text>
+        </Heading>
+        <Text size="2" className="text-slate-500 block mt-1">
+          Το εξατομικευμένο πρόγραμμα διατροφής σας για την εβδομάδα. Πατήστε &ldquo;Εναλλακτικές&rdquo; για να
+          εξερευνήσετε επιλογές για κάθε γεύμα.
+        </Text>
+      </div>
 
-      <Section size="1" />
-      <Heading className="text-center" size="6">
-        <Text color="cyan">{date.getHours() > 12 ? "✨ Καλήν σας εσπέρα ✨" : "🌸 Καλήν σας ημέρα 🌸"}</Text>
-        {/* <Text>Στέφανε!</Text> */}
-      </Heading>
-      <Section size="1" />
+      {/* Visible only on desktop */}
+      <div className="hidden md:block">
+        <Section size="1" />
+      </div>
 
-      <UserProfile />
+      {/* UserProfile card – visible only on desktop */}
+      <div className="hidden md:block">
+        <UserProfile />
+        <Section size="1" />
+      </div>
 
-      <Section size="1" />
+      {/* Daily progress – mobile only, shown above the schedule */}
+      <div className="md:hidden mx-4 my-3 bg-white rounded-2xl shadow-sm border border-slate-100 px-4 py-3">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Πρόοδος Σήμερα</p>
+        <DailyProgress />
+      </div>
 
       <WeeklySchedule />
-      {/* </Container> */}
 
-      {/* <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-      </div> */}
-      {/* </main> */}
+      {/* FAB for mobile – opens Nutrition Profile dialog */}
+      <UserProfileFab />
     </>
   );
 }

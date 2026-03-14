@@ -20,15 +20,20 @@ import clsx from "clsx";
 import { ArrowLeftRight } from "lucide-react";
 import { getAlternatives } from "../helpers/util";
 
-const NewlineText = (text: string) => {
-  const newText = text.split("\n").map((str, i) => (
-    <Box className="pt-1" key={i}>
+const MEAL_MACROS: Record<Meal, string> = {
+  breakfast: "350 cal • 12g P",
+  snack1: "200 cal • 6g P",
+  lunch: "450 cal • 35g P",
+  snack2: "180 cal • 5g P",
+  dinner: "520 cal • 38g P",
+};
+
+const NewlineText = (text: string) =>
+  text.split("\n").map((str, i) => (
+    <Box className="pt-1 text-slate-600 text-sm" key={i}>
       - {str}
     </Box>
   ));
-
-  return newText;
-};
 
 const greekNameToMeal = (meal: string): Meal => {
   switch (meal) {
@@ -43,7 +48,7 @@ const greekNameToMeal = (meal: string): Meal => {
     case "Απογευματινό":
       return "snack2";
     default:
-      return "breakfast"; // Default case if no match found
+      return "breakfast";
   }
 };
 
@@ -51,49 +56,64 @@ export const WeeklyMealRow = ({
   meal,
   foods,
   currentDay,
+  rowIndex = 0,
   callback,
+  checkedMeals,
+  onToggle,
 }: {
   meal: string;
   foods: FoodEntry[];
   currentDay: number;
+  rowIndex?: number;
   callback?: (meal: Meal, category: Category, index: number) => void;
+  checkedMeals: Set<string>;
+  onToggle: (key: string) => void;
 }) => {
-  const invokeIfFun = (meal: Meal, category: Category, index: number) => {
-    if (typeof callback === "function") {
-      callback(meal, category, index);
-    }
-  };
+  const mealKey = greekNameToMeal(meal);
+  const isLastRow = meal === "Βραδινό";
+
+  // Is this column index the current day?
+  // foods[0] = Monday (day=1), foods[6] = Sunday (day=0)
+  const isCurrentDay = (index: number) => (index + 1) % 7 === currentDay % 7;
+
   return (
-    <>
-      <Table.Row className="border-slate-400">
-        {/* <TableCell className="text-left font-bold text-slate-700 border-r-[1px] border-slate-400">
-          {meal}
-        </TableCell> */}
-        {foods?.map((food, index) => (
+    <Table.Row>
+      {foods?.map((food, index) => {
+        const cellKey = `${DaysEnum[(index + 1) % 7]}-${mealKey}`;
+        const isChecked = checkedMeals.has(cellKey);
+        const isToday = isCurrentDay(index);
+        return (
           <Table.Cell
+            key={index}
             className={clsx(
-              "border-slate-400 content-start hover:bg-slate-200/50",
-              index != 6 && "border-r-[1px]",
-              meal != "Βραδινό" && "border-b-[1px]"
-              // index === currentDay - 1 &&
-              //   "border-l-2 border-r-2 border-slate-400"
-            )}
-            key={index}>
-            <div className="flex place-content-between items-center font-semibold text-slate-600 border-b-[1px] border-slate-600 border-dashed pb-1">
-              <Text className=""> {meal} </Text>
+              "content-start align-top",
+              index !== 6 && "border-r border-slate-200",
+              !isLastRow && "border-b border-slate-200",
+              isCurrentDay(index)
+                ? "bg-emerald-50 hover:bg-emerald-100/80"
+                : rowIndex % 2 === 0
+                  ? "bg-slate-50 hover:bg-slate-100/80"
+                  : "bg-white hover:bg-slate-50/60",
+            )}>
+            <div className="flex flex-col gap-1.5 py-1">
+              {/* Meal name + swap button (original style) */}
               <Dialog.Root>
-                <Tooltip content="Πάτησε για εναλλακτικές">
-                  <Dialog.Trigger>
-                    <IconButton variant="soft">
-                      <ArrowLeftRight width="16" height="16" />
-                    </IconButton>
-                  </Dialog.Trigger>
-                </Tooltip>
+                <div className="flex items-center justify-between font-semibold text-slate-600 border-b border-dashed border-slate-300 pb-1.5">
+                  <span className="text-sm">{meal}</span>
+                  <Tooltip content="Πάτησε για εναλλακτικές">
+                    <Dialog.Trigger>
+                      <IconButton variant="soft" size="1">
+                        <ArrowLeftRight width="14" height="14" />
+                      </IconButton>
+                    </Dialog.Trigger>
+                  </Tooltip>
+                </div>
+
                 <Dialog.Content minWidth="360px" maxWidth="700px" className="bg-teal-100">
                   <Dialog.Title className="text-center">
                     Εναλλακτικά γεύματα για {meal.toLocaleLowerCase()}
                   </Dialog.Title>
-                  <Dialog.Description className="flex flex-col">
+                  <Dialog.Description className="flex flex-col gap-2">
                     <Text className="text-center">
                       Γεύματα τα οποία μπορούν να αντικαταστήσουν το σημερινό μενού προσφέροντας αντίστοιχη διατροφική
                       αξία με το αρχικό πλάνο.
@@ -103,37 +123,47 @@ export const WeeklyMealRow = ({
                       <Badge size="3">{food.category.split("_").join(" ")}</Badge>
                     </Flex>
                   </Dialog.Description>
-
                   <ScrollArea type="auto" className="py-4">
-                    <Flex direction={"column"} gap="3">
-                      {getAlternatives(greekNameToMeal(meal), food.id, food.category).map((foodEntry, index) => (
-                        <Card key={index} className="bg-yellow-100">
-                          <Strong className="text-slate-600">Επιλογή {index + 2}</Strong>
+                    <Flex direction="column" gap="3">
+                      {getAlternatives(greekNameToMeal(meal), food.id, food.category).map((foodEntry, i) => (
+                        <Card key={i} className="bg-yellow-100">
+                          <Strong className="text-slate-600">Επιλογή {i + 2}</Strong>
                           <Text>{NewlineText(foodEntry.description)}</Text>
                         </Card>
                       ))}
                     </Flex>
                   </ScrollArea>
                   <Dialog.Close className="w-full">
-                    <Button size="3">
-                      <Text>Ok!</Text>
-                    </Button>
+                    <Button size="3">Ok!</Button>
                   </Dialog.Close>
                 </Dialog.Content>
               </Dialog.Root>
 
-              {/* <span
-                className="hover:cursor-pointer"
-                onClick={() => {
-                  invokeIfFun("lunch", food.category, index);
-                }}>
-                Reroll
-              </span> */}
+              {/* Checkbox + food name */}
+              <div className="flex items-start gap-2">
+                {isToday && (
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => onToggle(cellKey)}
+                    className="mt-0.5 w-[15px] h-[15px] accent-emerald-600 flex-shrink-0 cursor-pointer"
+                  />
+                )}
+                <span
+                  className={clsx(
+                    "text-slate-700 font-medium text-sm leading-snug",
+                    isChecked && "line-through text-slate-400",
+                  )}>
+                  {food.description.split("\n")[0]}
+                </span>
+              </div>
+
+              {/* Macro info */}
+              <span className="text-slate-400 text-xs pl-5">{MEAL_MACROS[mealKey]}</span>
             </div>
-            {NewlineText(food.description)}
           </Table.Cell>
-        ))}
-      </Table.Row>
-    </>
+        );
+      })}
+    </Table.Row>
   );
 };
