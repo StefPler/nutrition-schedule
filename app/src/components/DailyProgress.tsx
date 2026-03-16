@@ -2,17 +2,10 @@
 import React from "react";
 import { useStorage } from "../hooks/useStorage";
 import { useDailyCheckins } from "../hooks/useDailyCheckins";
+import { useMealPortions } from "../hooks/useMealPortions";
 import { UserProfile as UserProfileT } from "../types/userProfile";
 import { macroCalculator } from "../services/CalculatorService";
 import { Meal } from "../types/period";
-
-const MEAL_MACROS: Record<Meal, { cal: number; protein: number; carbs: number; fat: number }> = {
-  breakfast: { cal: 350, protein: 12, carbs: 55, fat: 8 },
-  snack1: { cal: 200, protein: 6, carbs: 20, fat: 12 },
-  lunch: { cal: 450, protein: 35, carbs: 30, fat: 18 },
-  snack2: { cal: 180, protein: 5, carbs: 15, fat: 12 },
-  dinner: { cal: 520, protein: 38, carbs: 40, fat: 22 },
-};
 
 const MEAL_KEYS: Meal[] = ["breakfast", "snack1", "lunch", "snack2", "dinner"];
 
@@ -44,6 +37,7 @@ export const DailyProgress = () => {
     getItem: { data: userProfile, isLoading },
   } = useStorage<UserProfileT>("userProfile");
   const { checkedMeals, todayDayName } = useDailyCheckins();
+  const mealPortions = useMealPortions(todayDayName);
 
   if (isLoading) return null;
 
@@ -53,14 +47,16 @@ export const DailyProgress = () => {
 
   const macros = macroCalculator(userProfile);
 
-  const consumed = { cal: 0, protein: 0, carbs: 0, fat: 0 };
+  const consumed = { cal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 };
   for (const meal of MEAL_KEYS) {
     const key = `${todayDayName}-${meal}`;
-    if (checkedMeals.has(key)) {
-      consumed.cal += MEAL_MACROS[meal].cal;
-      consumed.protein += MEAL_MACROS[meal].protein;
-      consumed.carbs += MEAL_MACROS[meal].carbs;
-      consumed.fat += MEAL_MACROS[meal].fat;
+    if (checkedMeals.has(key) && mealPortions) {
+      const portion = mealPortions[meal];
+      consumed.cal += portion.totalCalories;
+      consumed.protein += portion.totalProtein;
+      consumed.carbs += portion.totalCarbs;
+      consumed.fat += portion.totalFat;
+      consumed.fiber += portion.totalFiber;
     }
   }
 
@@ -70,6 +66,7 @@ export const DailyProgress = () => {
       <ProgressBar label="Πρωτεΐνη" consumed={consumed.protein} goal={macros.protein} color="bg-blue-400" />
       <ProgressBar label="Υδατάνθρ." consumed={consumed.carbs} goal={macros.carbs} color="bg-purple-400" />
       <ProgressBar label="Λιπαρά" consumed={consumed.fat} goal={macros.fat} color="bg-orange-400" />
+      <ProgressBar label="Φυτ. ίνες" consumed={consumed.fiber} goal={macros.fiber} color="bg-amber-500" />
     </div>
   );
 };

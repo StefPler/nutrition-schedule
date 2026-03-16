@@ -16,17 +16,10 @@ import {
 } from "@radix-ui/themes";
 import { Category, FoodEntry } from "@/src/types/foods";
 import { DaysEnum, Meal } from "@/src/types/period";
+import { MealPortion } from "@/src/types/nutrition";
 import clsx from "clsx";
 import { ArrowLeftRight } from "lucide-react";
 import { getAlternatives } from "../helpers/util";
-
-const MEAL_MACROS: Record<Meal, string> = {
-  breakfast: "350 cal • 12g P",
-  snack1: "200 cal • 6g P",
-  lunch: "450 cal • 35g P",
-  snack2: "180 cal • 5g P",
-  dinner: "520 cal • 38g P",
-};
 
 const NewlineText = (text: string) =>
   text.split("\n").map((str, i) => (
@@ -60,6 +53,7 @@ export const WeeklyMealRow = ({
   callback,
   checkedMeals,
   onToggle,
+  mealPortions,
 }: {
   meal: string;
   foods: FoodEntry[];
@@ -68,6 +62,7 @@ export const WeeklyMealRow = ({
   callback?: (meal: Meal, category: Category, index: number) => void;
   checkedMeals: Set<string>;
   onToggle: (key: string) => void;
+  mealPortions?: Record<Meal, MealPortion> | null;
 }) => {
   const mealKey = greekNameToMeal(meal);
   const isLastRow = meal === "Βραδινό";
@@ -159,7 +154,11 @@ export const WeeklyMealRow = ({
               </div>
 
               {/* Macro info */}
-              <span className="text-slate-400 text-xs pl-5">{MEAL_MACROS[mealKey]}</span>
+              <span className="text-slate-400 text-xs pl-5">
+                {mealPortions?.[mealKey]
+                  ? `${mealPortions[mealKey].totalCalories} cal • ${Math.round(mealPortions[mealKey].totalProtein)}g P`
+                  : "—"}
+              </span>
             </div>
           </Table.Cell>
         );

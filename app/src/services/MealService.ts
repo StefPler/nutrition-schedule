@@ -12,10 +12,7 @@ const createMondaySchedule = (): DailySchedule => {
 };
 
 const createTuesdaySchedule = (): DailySchedule => {
-  const lunchSameAsDinnerDay = pickRandomFoodFromCategory(
-    "lunch",
-    "white_meats"
-  );
+  const lunchSameAsDinnerDay = pickRandomFoodFromCategory("lunch", "white_meats");
 
   return {
     breakfast: pickRandomFoodFromCategory("breakfast", "mixed"),
@@ -66,10 +63,7 @@ const createSaturdaySchedule = () => {
 };
 
 const createSundaySchedule = () => {
-  const lunchSameAsDinnerDay = pickRandomFoodFromCategory(
-    "lunch",
-    "white_meats"
-  );
+  const lunchSameAsDinnerDay = pickRandomFoodFromCategory("lunch", "white_meats");
 
   return {
     breakfast: pickRandomFoodFromCategory("breakfast", "mixed"),
@@ -82,12 +76,8 @@ const createSundaySchedule = () => {
 
 const diversifyRepeatingMeals = (schedule: WeeklySchedule) => {
   // Ensuring we don't have repeating meals for the white_meats & legumes days
-  schedule.Thursday.lunch = pickRandomFoodFromCategory("lunch", "white_meats", [
-    schedule.Tuesday.lunch.id,
-  ]);
-  schedule.Friday.lunch = pickRandomFoodFromCategory("lunch", "legumes", [
-    schedule.Wednesday.lunch.id,
-  ]);
+  schedule.Thursday.lunch = pickRandomFoodFromCategory("lunch", "white_meats", [schedule.Tuesday.lunch.id]);
+  schedule.Friday.lunch = pickRandomFoodFromCategory("lunch", "legumes", [schedule.Wednesday.lunch.id]);
   schedule.Sunday.lunch = pickRandomFoodFromCategory("lunch", "white_meats", [
     schedule.Tuesday.lunch.id,
     schedule.Thursday.lunch.id,
@@ -116,7 +106,7 @@ export const createWeeklySchedule = (): WeeklySchedule => {
 export const createStaticWeeklySchedule = (): WeeklySchedule => {
   let schedule: WeeklySchedule = {
     Monday: {
-      // τσικεν ντει
+      // Chicken day
       breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
       snack1: pickFoodFromId("snack1", 3), // Yogurt
       lunch: pickFoodFromId("lunch", 14), // Chicken + rice + salad
@@ -124,23 +114,23 @@ export const createStaticWeeklySchedule = (): WeeklySchedule => {
       dinner: pickFoodFromId("dinner", 5), // Salad
     },
     Tuesday: {
-      // παστα ντει
+      // Pasta day
       breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
       snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 15), // Μπιφ + pasta + salad
+      lunch: pickFoodFromId("lunch", 15), // Beef + pasta + salad
       snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 6), //  Μπιφ + pasta + salad
+      dinner: pickFoodFromId("dinner", 6), //  Beef + pasta + salad
     },
     Wednesday: {
-      // λεντιλ ντει
+      // Lentil day
       breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
       snack1: pickFoodFromId("snack1", 3), // Yogurt
       lunch: pickFoodFromId("lunch", 16), // Lentils
       snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 4), // ομελετ + βετζ
+      dinner: pickFoodFromId("dinner", 4), // omelete + vegies
     },
     Thursday: {
-      // μπιφτεκι ντει
+      // Beef day
       breakfast: pickFoodFromId("breakfast", 1), // Τοστ
       snack1: pickFoodFromId("snack1", 3), // Yogurt
       lunch: pickFoodFromId("lunch", 8), // Chicken + ποτατο + salad
@@ -148,15 +138,15 @@ export const createStaticWeeklySchedule = (): WeeklySchedule => {
       dinner: pickFoodFromId("dinner", 7), // Chicken + ποτατο + salad
     },
     Friday: {
-      // αρακασ ντει
+      // Peas day
       breakfast: pickFoodFromId("breakfast", 1), // Τοστ
       snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 17), // αρακας + rice + salad
+      lunch: pickFoodFromId("lunch", 17), // peas + rice + salad
       snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 4), // ομελετ + βετζ
+      dinner: pickFoodFromId("dinner", 4), // omelete + vegies
     },
     Saturday: {
-      // φρι μιντ ντει
+      // Free meal day
       breakfast: pickFoodFromId("breakfast", 1), // Τοστ
       snack1: pickFoodFromId("snack1", 3), // Yogurt
       lunch: pickFoodFromId("lunch", 18), // Fish + rice + salad
@@ -164,7 +154,7 @@ export const createStaticWeeklySchedule = (): WeeklySchedule => {
       dinner: pickFoodFromId("dinner", 8), // Salad
     },
     Sunday: {
-      // μορ παστα γιαααασ
+      // Chicken day
       breakfast: pickFoodFromId("breakfast", 1), // Τοστ
       snack1: pickFoodFromId("snack1", 3), // Yogurt
       lunch: pickFoodFromId("lunch", 19), // Chicken + rice + salad

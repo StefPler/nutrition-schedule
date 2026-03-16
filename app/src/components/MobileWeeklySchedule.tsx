@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { Circles } from "react-loader-spinner";
 import { useGetSchedule } from "../hooks/useGetSchedule";
 import { useDailyCheckins } from "../hooks/useDailyCheckins";
+import { useMealPortions } from "../hooks/useMealPortions";
 import { Days, DaysEnum, Meal } from "../types/period";
 import { FoodEntry } from "../types/foods";
 import { getAlternatives } from "../helpers/util";
@@ -38,15 +39,6 @@ const MEAL_LABELS: Record<Meal, string> = {
   lunch: "Μεσημεριανό",
   snack2: "Απογευματινό",
   dinner: "Βραδινό",
-};
-
-// Mock macro info per meal type
-const MEAL_MACROS: Record<Meal, string> = {
-  breakfast: "350 cal • 12g P • 55g C • 8g F",
-  snack1: "200 cal • 6g P • 20g C • 12g F",
-  lunch: "450 cal • 35g P • 30g C • 18g F",
-  snack2: "180 cal • 5g P • 15g C • 12g F",
-  dinner: "520 cal • 38g P • 40g C • 22g F",
 };
 
 const MEAL_ORDER: Meal[] = ["breakfast", "snack1", "lunch", "snack2", "dinner"];
@@ -99,6 +91,7 @@ export const MobileWeeklySchedule = () => {
   const { data: weeklySchedule, isLoading } = useGetSchedule();
   const { checkedMeals, toggle: toggleMeal, todayDayName: todayDay } = useDailyCheckins();
   const [selectedDay, setSelectedDay] = useState<Days>(todayDay);
+  const mealPortions = useMealPortions(selectedDay);
 
   const selectedIndex = DAYS_ORDER.indexOf(selectedDay);
 
@@ -198,7 +191,11 @@ export const MobileWeeklySchedule = () => {
                   )}>
                   {food.description.split("\n")[0]}
                 </span>
-                <span className="text-slate-400 text-xs block mt-0.5">{MEAL_MACROS[meal]}</span>
+                <span className="text-slate-400 text-xs block mt-0.5">
+                  {mealPortions?.[meal]
+                    ? `${mealPortions[meal].totalCalories} cal • ${Math.round(mealPortions[meal].totalProtein)}g P • ${Math.round(mealPortions[meal].totalCarbs)}g C • ${Math.round(mealPortions[meal].totalFat)}g F • ${Math.round(mealPortions[meal].totalFiber)}g Fiber`
+                    : "—"}
+                </span>
               </div>
 
               {/* Alternatives button */}

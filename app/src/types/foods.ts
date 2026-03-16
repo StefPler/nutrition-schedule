@@ -10,6 +10,8 @@ export type Category =
   | "dairy"
   | "repeat_lunch";
 
+import { Ingredient } from "./nutrition";
+
 export type Recipe = {
   id: number;
   category: Category;
@@ -17,7 +19,7 @@ export type Recipe = {
   name: string;
   description: string;
   serves: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   instructions: string[];
   link?: string;
 };

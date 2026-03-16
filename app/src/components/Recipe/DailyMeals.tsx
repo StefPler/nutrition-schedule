@@ -1,5 +1,6 @@
 "use client";
 import { useGetSchedule } from "@/src/hooks/useGetSchedule";
+import { useMealPortions } from "@/src/hooks/useMealPortions";
 import { Days, DaysEnum } from "@/src/types/period";
 import { useMemo, useState } from "react";
 import { RecipeCard } from "./RecipeCard";
@@ -17,16 +18,10 @@ const DAY_LABELS: Record<Days, string> = {
   Sunday: "Κυριακή",
 };
 
-// Mock macro values per meal type (placeholder until real per-recipe data is available)
-const MOCK_MACROS = {
-  breakfast: { calories: 450, protein: 12, carbs: 65, fat: 16 },
-  lunch: { calories: 620, protein: 35, carbs: 55, fat: 22 },
-  dinner: { calories: 520, protein: 38, carbs: 40, fat: 20 },
-};
-
 export const DailyMeals = () => {
   const { data: schedule, isLoading } = useGetSchedule();
   const [day, setDay] = useState<Days>(DaysEnum[new Date().getDay()] as Days);
+  const mealPortions = useMealPortions(day);
 
   const breakfast = useMemo(() => schedule?.byDay[day].breakfast.recipe, [schedule, day]);
   const lunch = useMemo(() => schedule?.byDay[day].lunch.recipe, [schedule, day]);
@@ -34,8 +29,7 @@ export const DailyMeals = () => {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-3 pb-6">
-      {/* Day selector tabs
-          – horizontal scroll on mobile, wrapping row on desktop */}
+      {/* Day selector tabs */}
       <div className="overflow-x-auto md:overflow-x-visible mb-6">
         <div className="flex gap-2 min-w-max md:min-w-0 md:flex-wrap md:justify-center pb-1 px-1">
           {DAYS_ORDER.map((d) => (
@@ -54,7 +48,7 @@ export const DailyMeals = () => {
         </div>
       </div>
 
-      {/* Cards stacked vertically on both mobile and desktop */}
+      {/* Cards stacked vertically */}
       <div className="flex flex-col gap-5">
         <RecipeCard
           isLoading={isLoading}
@@ -63,7 +57,7 @@ export const DailyMeals = () => {
           description={breakfast?.description ?? ""}
           ingredients={breakfast?.ingredients ?? []}
           execution={breakfast?.instructions ?? []}
-          macros={MOCK_MACROS.breakfast}
+          mealPortion={mealPortions?.breakfast}
         />
         <RecipeCard
           isLoading={isLoading}
@@ -72,7 +66,7 @@ export const DailyMeals = () => {
           description={lunch?.description ?? ""}
           ingredients={lunch?.ingredients ?? []}
           execution={lunch?.instructions ?? []}
-          macros={MOCK_MACROS.lunch}
+          mealPortion={mealPortions?.lunch}
         />
         <RecipeCard
           isLoading={isLoading}
@@ -81,7 +75,7 @@ export const DailyMeals = () => {
           description={dinner?.description ?? ""}
           ingredients={dinner?.ingredients ?? []}
           execution={dinner?.instructions ?? []}
-          macros={MOCK_MACROS.dinner}
+          mealPortion={mealPortions?.dinner}
         />
       </div>
     </div>

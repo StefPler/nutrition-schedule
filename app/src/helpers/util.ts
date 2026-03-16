@@ -1,6 +1,12 @@
 import { Category, FoodEntry } from "../types/foods";
+import { Ingredient, ScaledIngredient } from "../types/nutrition";
 import { Meal, WeeklySchedule, WeeklyScheduleRows } from "../types/period";
 import { breakfast, lunch, dinner, snacks } from "../constants/consts";
+
+export const ingredientLabel = (ing: Ingredient | ScaledIngredient): string => {
+  const grams = "grams" in ing ? ing.grams : ing.baseAmountGrams;
+  return `${grams}γρ ${ing.label}`;
+};
 
 const getRandomElement = (array: Array<any>) => {
   const randomElement = array[Math.floor(Math.random() * array.length)];

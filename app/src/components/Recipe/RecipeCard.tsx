@@ -1,12 +1,15 @@
 "use client";
 import { Box, Card, Inset, Skeleton, Text } from "@radix-ui/themes";
 import { Clock } from "lucide-react";
+import { Ingredient, MealPortion } from "@/src/types/nutrition";
+import { ingredientLabel } from "@/src/helpers/util";
 
 type MacroData = {
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
+  fiber: number;
 };
 
 const MACRO_ICONS: Record<keyof MacroData, string> = {
@@ -14,6 +17,7 @@ const MACRO_ICONS: Record<keyof MacroData, string> = {
   protein: "🥩 ",
   carbs: "🌾 ",
   fat: "💧 ",
+  fiber: "🌿 ",
 };
 
 const MACRO_LABELS: Record<keyof MacroData, string> = {
@@ -21,6 +25,7 @@ const MACRO_LABELS: Record<keyof MacroData, string> = {
   protein: "g protein",
   carbs: "g carbs",
   fat: "g fat",
+  fiber: "g fiber",
 };
 
 export const RecipeCard = ({
@@ -31,18 +36,28 @@ export const RecipeCard = ({
   ingredients,
   execution,
   preparationTime = 20,
-  macros,
+  mealPortion,
 }: {
   isLoading: boolean;
   meal: string;
   name: string;
   description: string;
   badges?: string[];
-  ingredients: string[];
+  ingredients: Ingredient[];
   execution: string[];
   preparationTime?: number;
-  macros?: MacroData;
+  mealPortion?: MealPortion;
 }) => {
+  const macros: MacroData | undefined = mealPortion
+    ? {
+        calories: mealPortion.totalCalories,
+        protein: Math.round(mealPortion.totalProtein),
+        carbs: Math.round(mealPortion.totalCarbs),
+        fat: Math.round(mealPortion.totalFat),
+        fiber: Math.round(mealPortion.totalFiber),
+      }
+    : undefined;
+
   return (
     <Box className="w-full">
       <Card size="2" className="shadow-md overflow-hidden">
@@ -86,9 +101,18 @@ export const RecipeCard = ({
             </div>
           )}
 
-          {/* Ingredients + Instructions
-              – grid-cols-2 side-by-side on desktop (md+)
-              – single column stacked on mobile */}
+          {/* Warnings */}
+          {mealPortion && mealPortion.warnings.length > 0 && (
+            <div className="mb-4 space-y-1">
+              {mealPortion.warnings.map((w, i) => (
+                <p key={i} className="text-amber-600 text-xs bg-amber-50 px-3 py-1.5 rounded-lg">
+                  ⚠️ {w}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Ingredients + Instructions */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Ingredients */}
             <div>
@@ -97,12 +121,17 @@ export const RecipeCard = ({
               </Skeleton>
               <Skeleton loading={isLoading} height="120px" className="rounded-xl">
                 <ol className="space-y-1">
-                  {ingredients?.map((ingredient, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-500 mt-0.5 flex-shrink-0 font-bold text-base leading-none">•</span>
-                      <span className="text-slate-600 text-sm">{ingredient}</span>
-                    </li>
-                  ))}
+                  {ingredients?.map((ing, idx) => {
+                    const ingredient = mealPortion?.scaledIngredients[idx] ?? ing;
+                    return (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-emerald-500 mt-0.5 flex-shrink-0 font-bold text-base leading-none">
+                          •
+                        </span>
+                        <span className="text-slate-600 text-sm">{ingredientLabel(ingredient)}</span>
+                      </li>
+                    );
+                  })}
                 </ol>
               </Skeleton>
             </div>
