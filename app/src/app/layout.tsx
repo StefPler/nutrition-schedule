@@ -11,6 +11,7 @@ import clsx from "clsx";
 const inter = Inter({ subsets: ["greek"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://weekbites.me"),
   title: "Διατροφή",
   description:
     "Εξατομικευμένο εβδομαδιαίο πρόγραμμα Μεσογειακής διατροφής με αυτόματο υπολογισμό θερμίδων και μακροθρεπτικών.",
