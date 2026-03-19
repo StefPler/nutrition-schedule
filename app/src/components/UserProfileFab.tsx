@@ -6,6 +6,7 @@ import { macroCalculator } from "../services/CalculatorService";
 import { Badge, Dialog, Flex, IconButton, ScrollArea, Spinner, Text } from "@radix-ui/themes";
 import { X, CalculatorIcon } from "lucide-react";
 import { MacroForm } from "./MacroForm";
+import { BmiCard } from "./BmiCard";
 
 export const UserProfileFab = () => {
   const [open, setOpen] = useState(false);
@@ -63,6 +64,9 @@ export const UserProfileFab = () => {
             Συμπληρώστε τα στοιχεία σας για να δείτε τους διατροφικούς σας στόχους.
           </Text>
         )}
+
+        {/* BMI card — only shown when profile exists */}
+        {userProfile && <BmiCard userProfile={userProfile} />}
 
         {/* Form in a scroll area so it doesn't overflow on small phones */}
         <ScrollArea style={{ maxHeight: "62vh" }} scrollbars="vertical">

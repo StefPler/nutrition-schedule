@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/r
 import { ChevronDown, ChevronUp, User } from "lucide-react";
 import { MacroForm } from "./MacroForm";
 import { DailyProgress } from "./DailyProgress";
+import { BmiCard } from "./BmiCard";
 
 export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,6 +69,7 @@ export const UserProfile = () => {
               {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </div>
           </div>
+          {userProfile && <BmiCard userProfile={userProfile} />}
           <DailyProgress />
         </CollapsibleTrigger>
 
