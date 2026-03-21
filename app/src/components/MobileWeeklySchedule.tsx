@@ -53,39 +53,51 @@ const NewlineText = ({ text }: { text: string }) => (
   </>
 );
 
-const AlternativesDialog = ({ meal, food }: { meal: Meal; food: FoodEntry }) => (
-  <Dialog.Root>
-    <Dialog.Trigger>
-      <button className="bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-full font-medium hover:bg-emerald-700 transition-colors whitespace-nowrap flex-shrink-0">
-        Εναλλακτικές
-      </button>
-    </Dialog.Trigger>
-    <Dialog.Content minWidth="340px" maxWidth="600px" className="bg-teal-100">
-      <Dialog.Title className="text-center">Εναλλακτικά γεύματα για {MEAL_LABELS[meal].toLowerCase()}</Dialog.Title>
-      <Dialog.Description>
-        <Text className="text-center text-sm block">Γεύματα που μπορούν να αντικαταστήσουν το τρέχον μενού.</Text>
-        <Badge size="2" className="mt-1">
-          {food.category.split("_").join(" ")}
-        </Badge>
-      </Dialog.Description>
-      <ScrollArea type="auto" style={{ maxHeight: 320 }} className="py-3">
-        <Flex direction="column" gap="3">
-          {getAlternatives(meal, food.id, food.category).map((alt, i) => (
-            <Card key={i} className="bg-yellow-100">
-              <Strong className="text-slate-600 text-sm">Επιλογή {i + 2}</Strong>
-              <NewlineText text={alt.description} />
-            </Card>
-          ))}
-        </Flex>
-      </ScrollArea>
-      <Dialog.Close className="w-full mt-2">
-        <Button size="3" className="w-full">
-          Ok!
-        </Button>
-      </Dialog.Close>
-    </Dialog.Content>
-  </Dialog.Root>
-);
+const AlternativesDialog = ({ meal, food }: { meal: Meal; food: FoodEntry }) => {
+  const alternatives = getAlternatives(meal, food.id, food.category);
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <button className="bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-full font-medium hover:bg-emerald-700 transition-colors whitespace-nowrap flex-shrink-0">
+          Εναλλακτικές
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Content minWidth="340px" maxWidth="600px">
+        <Dialog.Title className="text-center text-emerald-800">Εναλλακτικά γεύματα για {MEAL_LABELS[meal].toLowerCase()}</Dialog.Title>
+        <Dialog.Description>
+          <Text className="text-center text-sm text-slate-500 block">Γεύματα που μπορούν να αντικαταστήσουν το τρέχον μενού.</Text>
+          <Badge size="2" variant="soft" className="mt-1">
+            {food.category.split("_").join(" ")}
+          </Badge>
+        </Dialog.Description>
+        <ScrollArea type="auto" style={{ maxHeight: 320 }} className="py-3">
+          <Flex direction="column" gap="3">
+            {alternatives.length === 0 ? (
+              <Card className="bg-slate-50 border border-slate-200">
+                <Text className="text-slate-500 text-sm text-center block py-2">
+                  Δεν βρέθηκαν εναλλακτικά γεύματα για αυτήν την κατηγορία.
+                </Text>
+              </Card>
+            ) : (
+              alternatives.map((alt, i) => (
+                <Card key={i} className="bg-emerald-50 border border-emerald-100">
+                  <Strong className="text-emerald-700 text-sm">Επιλογή {i + 2}</Strong>
+                  <NewlineText text={alt.description} />
+                </Card>
+              ))
+            )}
+          </Flex>
+        </ScrollArea>
+        <Dialog.Close className="w-full mt-2">
+          <Button size="3" className="w-full">
+            Ok!
+          </Button>
+        </Dialog.Close>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+};
 
 export const MobileWeeklySchedule = () => {
   const { data: weeklySchedule, isLoading } = useGetSchedule();

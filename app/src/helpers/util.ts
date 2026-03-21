@@ -30,15 +30,10 @@ const getFoods = (meal: Meal): FoodEntry[] => {
   }
 };
 
-export const pickRandomFoodFromCategory = (
-  meal: Meal,
-  category: Category,
-  excludeIds?: Array<number>
-): FoodEntry => {
+export const pickRandomFoodFromCategory = (meal: Meal, category: Category, excludeIds?: Array<number>): FoodEntry => {
   const foods = getFoods(meal);
   const filteredFoods = foods.filter((food) => food.category === category);
-  if (filteredFoods.length === 0)
-    throw new Error(`No meals found for category "${category}"`);
+  if (filteredFoods.length === 0) throw new Error(`No meals found for category "${category}"`);
   let selection = getRandomElement(filteredFoods) as FoodEntry;
   // While the selection includes a food from the exclusion list pick again
   let escapeCounter = 0;
@@ -57,41 +52,26 @@ export const pickFoodFromId = (meal: Meal, id: number): FoodEntry => {
   return food;
 };
 
-export const getAlternatives = (
-  meal: Meal,
-  excludeId: number,
-  category?: Category
-): FoodEntry[] => {
+export const getAlternatives = (meal: Meal, excludeId: number, category?: Category): FoodEntry[] => {
+  let freeDinnerId = 8;
   switch (meal) {
     case "breakfast":
-      return breakfast.filter(
-        (food) =>
-          food.id !== excludeId && food.category.includes(category ?? "")
-      );
+      return breakfast.filter((food) => food.id !== excludeId && food.category.includes(category ?? ""));
     case "snack1":
     case "snack2":
-      return snacks.filter(
-        (food) =>
-          food.id !== excludeId && food.category.includes(category ?? "")
-      );
+      return snacks.filter((food) => food.id !== excludeId && food.category.includes(category ?? ""));
     case "lunch":
-      return lunch.filter(
-        (food) =>
-          food.id !== excludeId && food.category.includes(category ?? "")
-      );
+      return lunch.filter((food) => food.id !== excludeId && food.category.includes(category ?? ""));
     case "dinner":
       return dinner.filter(
-        (food) =>
-          food.id !== excludeId && food.category.includes(category ?? "")
+        (food) => food.id !== excludeId && food.id !== freeDinnerId && food.category.includes(category ?? ""),
       );
     default:
       throw new Error("Meal not found");
   }
 };
 
-export const scheduleToRows = (
-  schedule: WeeklySchedule
-): WeeklyScheduleRows => {
+export const scheduleToRows = (schedule: WeeklySchedule): WeeklyScheduleRows => {
   return {
     breakfast: [
       schedule["Monday"].breakfast,

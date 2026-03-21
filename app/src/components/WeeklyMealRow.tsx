@@ -78,6 +78,8 @@ export const WeeklyMealRow = ({
         const cellKey = `${DaysEnum[(index + 1) % 7]}-${mealKey}`;
         const isChecked = checkedMeals.has(cellKey);
         const isToday = isCurrentDay(index);
+        const alternatives = getAlternatives(greekNameToMeal(meal), food.id, food.category);
+
         return (
           <Table.Cell
             key={index}
@@ -105,32 +107,40 @@ export const WeeklyMealRow = ({
                   </Tooltip>
                 </div>
 
-                <Dialog.Content minWidth="360px" maxWidth="700px" className="bg-teal-100">
-                  <Dialog.Title className="text-center">
+                <Dialog.Content minWidth="360px" maxWidth="700px">
+                  <Dialog.Title className="text-center text-emerald-800">
                     Εναλλακτικά γεύματα για {meal.toLocaleLowerCase()}
                   </Dialog.Title>
                   <Dialog.Description className="flex flex-col gap-2">
-                    <Text className="text-center">
+                    <Text className="text-center text-slate-500">
                       Γεύματα τα οποία μπορούν να αντικαταστήσουν το σημερινό μενού προσφέροντας αντίστοιχη διατροφική
                       αξία με το αρχικό πλάνο.
                     </Text>
                     <Flex direction="row" gap="2" justify="between">
-                      <Badge size="3">{DaysEnum[(index + 1) % 7]}</Badge>
-                      <Badge size="3">{food.category.split("_").join(" ")}</Badge>
+                      <Badge size="3" variant="soft">{DaysEnum[(index + 1) % 7]}</Badge>
+                      <Badge size="3" variant="soft">{food.category.split("_").join(" ")}</Badge>
                     </Flex>
                   </Dialog.Description>
                   <ScrollArea type="auto" className="py-4">
                     <Flex direction="column" gap="3">
-                      {getAlternatives(greekNameToMeal(meal), food.id, food.category).map((foodEntry, i) => (
-                        <Card key={i} className="bg-yellow-100">
-                          <Strong className="text-slate-600">Επιλογή {i + 2}</Strong>
-                          <Text>{NewlineText(foodEntry.description)}</Text>
+                      {alternatives.length === 0 ? (
+                        <Card className="bg-slate-50 border border-slate-200">
+                          <Text className="text-slate-500 text-sm text-center block py-2">
+                            Δεν βρέθηκαν εναλλακτικά γεύματα για αυτήν την κατηγορία.
+                          </Text>
                         </Card>
-                      ))}
+                      ) : (
+                        alternatives.map((foodEntry, i) => (
+                          <Card key={i} className="bg-emerald-50 border border-emerald-100">
+                            <Strong className="text-emerald-700">Επιλογή {i + 2}</Strong>
+                            <Text>{NewlineText(foodEntry.description)}</Text>
+                          </Card>
+                        ))
+                      )}
                     </Flex>
                   </ScrollArea>
                   <Dialog.Close className="w-full">
-                    <Button size="3">Ok!</Button>
+                    <Button size="3" className="w-full">Ok!</Button>
                   </Dialog.Close>
                 </Dialog.Content>
               </Dialog.Root>

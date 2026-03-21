@@ -86,3 +86,15 @@ ul {
     @apply bg-background text-foreground;
   }
 }
+
+/* Fix backdrop flicker on dialog close:
+   Radix dialog close animations default to fill-mode: none, so the overlay
+   and content snap back to opacity: 1 for one frame before React unmounts them.
+   Setting fill-mode: forwards keeps them at opacity: 0 until unmount. */
+@media (prefers-reduced-motion: no-preference) {
+  .rt-BaseDialogOverlay:where([data-state='closed']),
+  .rt-BaseDialogOverlay:where([data-state='closed'])::before,
+  .rt-BaseDialogContent:where([data-state='closed']) {
+    animation-fill-mode: forwards !important;
+  }
+}

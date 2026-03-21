@@ -41,6 +41,7 @@ export default function RootLayout({ children }: ChildrenProps) {
       <body className={clsx(inter.className)}>
         <Providers>
           <Theme
+            accentColor="teal"
             hasBackground={true}
             panelBackground="translucent"
             className="bg-gradient-to-br from-teal-100 to-green-200 ">
