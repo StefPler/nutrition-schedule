@@ -15,8 +15,8 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import { Category, FoodEntry } from "@/src/types/foods";
-import { DaysEnum, Meal } from "@/src/types/period";
-import { MealPortion } from "@/src/types/nutrition";
+import { Days, DaysEnum, Meal } from "@/src/types/period";
+import { AllDayPortions } from "@/src/hooks/useMealPortions";
 import clsx from "clsx";
 import { ArrowLeftRight } from "lucide-react";
 import { getAlternatives } from "../helpers/util";
@@ -53,7 +53,7 @@ export const WeeklyMealRow = ({
   callback,
   checkedMeals,
   onToggle,
-  mealPortions,
+  allDayPortions,
 }: {
   meal: string;
   foods: FoodEntry[];
@@ -62,10 +62,11 @@ export const WeeklyMealRow = ({
   callback?: (meal: Meal, category: Category, index: number) => void;
   checkedMeals: Set<string>;
   onToggle: (key: string) => void;
-  mealPortions?: Record<Meal, MealPortion> | null;
+  allDayPortions?: AllDayPortions | null;
 }) => {
   const mealKey = greekNameToMeal(meal);
   const isLastRow = meal === "Βραδινό";
+  const indexToDayName: Days[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
   // Is this column index the current day?
   // foods[0] = Monday (day=1), foods[6] = Sunday (day=0)
@@ -155,8 +156,8 @@ export const WeeklyMealRow = ({
 
               {/* Macro info */}
               <span className="text-slate-400 text-xs pl-5">
-                {mealPortions?.[mealKey]
-                  ? `${mealPortions[mealKey].totalCalories} cal • ${Math.round(mealPortions[mealKey].totalProtein)}g P`
+                {allDayPortions?.[indexToDayName[index]]?.[mealKey]
+                  ? `${allDayPortions[indexToDayName[index]][mealKey].totalCalories} cal • ${Math.round(allDayPortions[indexToDayName[index]][mealKey].totalProtein)}g P`
                   : "—"}
               </span>
             </div>

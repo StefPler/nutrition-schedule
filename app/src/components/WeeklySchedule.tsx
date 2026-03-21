@@ -7,7 +7,7 @@ import { Circles } from "react-loader-spinner";
 import { DaysEnum } from "../types/period";
 import { useGetSchedule } from "../hooks/useGetSchedule";
 import { useDailyCheckins } from "../hooks/useDailyCheckins";
-import { useMealPortions } from "../hooks/useMealPortions";
+import { useAllDayPortions } from "../hooks/useMealPortions";
 import clsx from "clsx";
 
 // Header cell shared styles
@@ -23,7 +23,7 @@ export const WeeklySchedule = () => {
   const { data: weeklySchedule, isLoading } = useGetSchedule();
   const [day] = useState(new Date().getDay());
   const { checkedMeals, toggle, todayDayName } = useDailyCheckins();
-  const mealPortions = useMealPortions(todayDayName);
+  const allDayPortions = useAllDayPortions();
 
   if (isLoading)
     return (
@@ -72,7 +72,7 @@ export const WeeklySchedule = () => {
                   rowIndex={0}
                   checkedMeals={checkedMeals}
                   onToggle={toggle}
-                  mealPortions={mealPortions}
+                  allDayPortions={allDayPortions}
                 />
                 <WeeklyMealRow
                   meal="Πρόγευμα"
@@ -81,7 +81,7 @@ export const WeeklySchedule = () => {
                   rowIndex={1}
                   checkedMeals={checkedMeals}
                   onToggle={toggle}
-                  mealPortions={mealPortions}
+                  allDayPortions={allDayPortions}
                 />
                 <WeeklyMealRow
                   meal="Μεσημεριανό"
@@ -90,7 +90,7 @@ export const WeeklySchedule = () => {
                   rowIndex={2}
                   checkedMeals={checkedMeals}
                   onToggle={toggle}
-                  mealPortions={mealPortions}
+                  allDayPortions={allDayPortions}
                 />
                 <WeeklyMealRow
                   meal="Απογευματινό"
@@ -99,7 +99,7 @@ export const WeeklySchedule = () => {
                   rowIndex={3}
                   checkedMeals={checkedMeals}
                   onToggle={toggle}
-                  mealPortions={mealPortions}
+                  allDayPortions={allDayPortions}
                 />
                 <WeeklyMealRow
                   meal="Βραδινό"
@@ -108,7 +108,7 @@ export const WeeklySchedule = () => {
                   rowIndex={4}
                   checkedMeals={checkedMeals}
                   onToggle={toggle}
-                  mealPortions={mealPortions}
+                  allDayPortions={allDayPortions}
                 />
               </Table.Body>
             </Table.Root>

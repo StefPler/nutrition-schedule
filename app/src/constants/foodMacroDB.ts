@@ -29,6 +29,7 @@ export const FOOD_MACRO_DB: Record<string, FoodMacroEntry> = {
   // Dairy
   low_fat_cheese: { calories: 200, protein: 25, carbs: 2, fat: 10, fiber: 0 },
   protein_yogurt: { calories: 67, protein: 10, carbs: 4.5, fat: 1, fiber: 0 },
+  cream_cheese: { calories: 215, protein: 5, carbs: 4, fat: 20, fiber: 0 },
   yogurt_plain: { calories: 61, protein: 3.2, carbs: 7, fat: 1.5, fiber: 0 },
   milk: { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.5, fiber: 0 },
 
@@ -43,6 +44,7 @@ export const FOOD_MACRO_DB: Record<string, FoodMacroEntry> = {
   okra: { calories: 33, protein: 2, carbs: 7.5, fat: 0.1, fiber: 3.2, isFreeVegetable: true },
   mushrooms: { calories: 22, protein: 3.1, carbs: 3.3, fat: 0.3, fiber: 1, isFreeVegetable: true },
   spring_onion: { calories: 32, protein: 1.8, carbs: 7.3, fat: 0.2, fiber: 1.8, isFreeVegetable: true },
+  lemon: { calories: 29, protein: 1.1, carbs: 9.3, fat: 0.3, fiber: 2.8, isFreeVegetable: true },
 
   // Fats & Condiments
   olive_oil: { calories: 884, protein: 0, carbs: 0, fat: 100, fiber: 0 },
