@@ -2,7 +2,7 @@ import { FOOD_MACRO_DB, ZERO_MACRO } from "../constants/foodMacroDB";
 import { FoodMacroEntry, Ingredient, MealPortion, ScaledIngredient } from "../types/nutrition";
 import { DailySchedule, Meal } from "../types/period";
 import { UserProfile } from "../types/userProfile";
-import { calorieMealDistribution, macroCalculator } from "./CalculatorService";
+import { macroCalculator } from "./CalculatorService";
 
 export const lookupMacro = (macroKey: string, warnings: string[]): FoodMacroEntry => {
   const entry = FOOD_MACRO_DB[macroKey];
@@ -132,36 +132,51 @@ export const calculateMealPortion = (ingredients: Ingredient[], mealKey: Meal, c
   };
 };
 
-export const getMealBudgets = (dailyCalories: number): Record<Meal, number> => {
-  const dist = calorieMealDistribution(dailyCalories);
-  const snackEach = Math.round(dist.snacks / 2);
-  return {
-    breakfast: dist.breakfast,
-    snack1: snackEach,
-    lunch: dist.lunch,
-    snack2: snackEach,
-    dinner: dist.dinner,
-  };
+export const computeBaseCalories = (ingredients: Ingredient[]): number => {
+  if (!ingredients || ingredients.length === 0) return 0;
+  let total = 0;
+  for (const ing of ingredients) {
+    const macro = FOOD_MACRO_DB[ing.macroKey];
+    if (!macro) continue;
+    if (ing.isFreeVegetable ?? macro.isFreeVegetable ?? false) continue;
+    total += macro.calories * (ing.baseAmountGrams / 100);
+  }
+  return total;
 };
 
 const MEAL_KEYS: Meal[] = ["breakfast", "snack1", "lunch", "snack2", "dinner"];
 
 export const calculateDayPortions = (userProfile: UserProfile, dayMeals: DailySchedule): Record<Meal, MealPortion> => {
   const { dailyCalories } = macroCalculator(userProfile);
-  const budgets = getMealBudgets(dailyCalories);
 
-const result = {} as Record<Meal, MealPortion>;
-
+  // First pass: resolve ingredients and compute base calories per meal
+  const resolved: { meal: Meal; ingredients: Ingredient[]; baseCal: number }[] = [];
   for (const meal of MEAL_KEYS) {
     const entry = dayMeals[meal];
     let ingredients = entry.recipe?.ingredients ?? [];
 
-    // Handle repeat_lunch: use lunch ingredients with dinner budget
+    // Handle repeat_lunch: use lunch ingredients
     if (meal === "dinner" && entry.category === "repeat_lunch") {
       ingredients = dayMeals.lunch.recipe?.ingredients ?? [];
     }
 
-    result[meal] = calculateMealPortion(ingredients, meal, budgets[meal]);
+    resolved.push({ meal, ingredients, baseCal: computeBaseCalories(ingredients) });
+  }
+
+  // Handle free meals (0 base calories): estimate phantom calories as average of real meals
+  const realMeals = resolved.filter((m) => m.baseCal > 0);
+  const avgBaseCal = realMeals.length > 0 ? realMeals.reduce((sum, m) => sum + m.baseCal, 0) / realMeals.length : 0;
+  const freeMealCount = resolved.length - realMeals.length;
+  const totalBaseCal = realMeals.reduce((sum, m) => sum + m.baseCal, 0) + freeMealCount * avgBaseCal;
+
+  // Daily scale factor
+  const dailyScale = totalBaseCal > 0 ? dailyCalories / totalBaseCal : 1;
+
+  // Second pass: compute per-meal budget and portions
+  const result = {} as Record<Meal, MealPortion>;
+  for (const { meal, ingredients, baseCal } of resolved) {
+    const budget = baseCal > 0 ? baseCal * dailyScale : 0;
+    result[meal] = calculateMealPortion(ingredients, meal, budget);
   }
 
   return result;

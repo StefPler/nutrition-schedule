@@ -150,7 +150,7 @@ export const WeeklyMealRow = ({
                     "text-slate-700 font-medium text-sm leading-snug",
                     isChecked && "line-through text-slate-400",
                   )}>
-                  {food.description.split("\n")[0]}
+                  {food.recipe?.name ?? food.description}
                 </span>
               </div>
 

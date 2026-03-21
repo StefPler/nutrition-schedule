@@ -189,7 +189,7 @@ export const MobileWeeklySchedule = () => {
                     "text-slate-700 font-medium text-sm block mt-0.5 leading-snug",
                     isChecked && "line-through",
                   )}>
-                  {food.description.split("\n")[0]}
+                  {food.recipe?.name ?? food.description}
                 </span>
                 <span className="text-slate-400 text-xs block mt-0.5">
                   {mealPortions?.[meal]

@@ -54,16 +54,3 @@ export const macroCalculator = (
   };
 };
 
-export const calorieMealDistribution = (totalCals: number) => {
-  const breakfast = Math.round(totalCals * 0.2);
-  const lunch = Math.round(totalCals * 0.35);
-  const dinner = Math.round(totalCals * 0.3);
-  const snacks = Math.round(totalCals * 0.15);
-
-  return {
-    breakfast,
-    lunch,
-    dinner,
-    snacks,
-  };
-};

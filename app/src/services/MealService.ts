@@ -106,60 +106,53 @@ export const createWeeklySchedule = (): WeeklySchedule => {
 export const createStaticWeeklySchedule = (): WeeklySchedule => {
   let schedule: WeeklySchedule = {
     Monday: {
-      // Chicken day
-      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 14), // Chicken + rice + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 5), // Salad
+      breakfast: pickFoodFromId("breakfast", 3), // Γιαούρτι 5% + whey + φρούτο + γκρανόλα
+      snack1: pickFoodFromId("snack1", 5), // Φρούτο + ξηροί καρποί
+      lunch: pickFoodFromId("lunch", 20), // Κοτόπουλο + γουακαμόλε + κινόα
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 10), // Κοτόπουλο + σαλάτα κολοκύθι + χαλούμι
     },
     Tuesday: {
-      // Pasta day
-      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 15), // Beef + pasta + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 6), //  Beef + pasta + salad
+      breakfast: pickFoodFromId("breakfast", 4), // Αυγά + αβοκάντο + γερμανικό ψωμί
+      snack1: pickFoodFromId("snack1", 6), // Wrap σολομού
+      lunch: pickFoodFromId("lunch", 21), // Φιλέτο μοσχάρι + μπασμάτι
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 11), // Γιαούρτι + δημητριακά + φρούτο
     },
     Wednesday: {
-      // Lentil day
-      breakfast: pickFoodFromId("breakfast", 2), // Overnight oats
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 16), // Lentils
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 4), // omelete + vegies
+      breakfast: pickFoodFromId("breakfast", 3), // Γιαούρτι 5% + whey + φρούτο + γκρανόλα
+      snack1: pickFoodFromId("snack1", 5), // Φρούτο + ξηροί καρποί
+      lunch: pickFoodFromId("lunch", 22), // Λαδερό + κατίκι
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 12), // Ντάκος + αυγά + cottage cheese
     },
     Thursday: {
-      // Beef day
-      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 8), // Chicken + ποτατο + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 7), // Chicken + ποτατο + salad
+      breakfast: pickFoodFromId("breakfast", 3), // Γιαούρτι 5% + whey + φρούτο + γκρανόλα
+      snack1: pickFoodFromId("snack1", 6), // Wrap σολομού
+      lunch: pickFoodFromId("lunch", 23), // Κιμάς + γλυκοπατάτα
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 13), // Μπουρίτο κιμά
     },
     Friday: {
-      // Peas day
-      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 17), // peas + rice + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 4), // omelete + vegies
+      breakfast: pickFoodFromId("breakfast", 4), // Αυγά + αβοκάντο + γερμανικό ψωμί
+      snack1: pickFoodFromId("snack1", 5), // Φρούτο + ξηροί καρποί
+      lunch: pickFoodFromId("lunch", 24), // Κοτόπουλο τηγανιά + πατάτα γεμιστή
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 11), // Γιαούρτι + δημητριακά + φρούτο
     },
     Saturday: {
-      // Free meal day
-      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 18), // Fish + rice + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 8), // Salad
+      breakfast: pickFoodFromId("breakfast", 3), // Γιαούρτι 5% + whey + φρούτο + γκρανόλα
+      snack1: pickFoodFromId("snack1", 7), // Choco-Banana Mug Cake
+      lunch: pickFoodFromId("lunch", 25), // Κριθαράκι ολικής + γαρίδες
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 8), // ΕΛΕΥΘΕΡΟ
     },
     Sunday: {
-      // Chicken day
-      breakfast: pickFoodFromId("breakfast", 1), // Τοστ
-      snack1: pickFoodFromId("snack1", 3), // Yogurt
-      lunch: pickFoodFromId("lunch", 19), // Chicken + rice + salad
-      snack2: pickFoodFromId("snack2", 2), // Μπάρα
-      dinner: pickFoodFromId("dinner", 9), // Chicken + rice + salad
+      breakfast: pickFoodFromId("breakfast", 5), // Πανκέικς πρωτεΐνης
+      snack1: pickFoodFromId("snack1", 7), // Choco-Banana Mug Cake
+      lunch: pickFoodFromId("lunch", 26), // Σολομός + ρύζι + λαχανικά
+      snack2: pickFoodFromId("snack2", 8), // Φρούτο + whey
+      dinner: pickFoodFromId("dinner", 14), // Σαλάτα σολομού + αβοκάντο + κινόα
     },
   };
 
