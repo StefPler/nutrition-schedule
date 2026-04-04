@@ -59,7 +59,7 @@ export const breakfast: FoodEntry[] = [
     id: 3,
     wFrequency: 4,
     category: "mixed",
-    description: "200γρ γιαούρτι 5%\n 15γρ whey\n 1 φρούτο\n 35γρ γκρανόλα\n 1 κ.γ μέλι",
+    description: "200γρ γιαούρτι 2%\n 15γρ whey\n 1 φρούτο\n 35γρ γκρανόλα\n 1 κ.γ μέλι",
     recipe: {
       id: 13,
       category: "mixed",
@@ -68,7 +68,7 @@ export const breakfast: FoodEntry[] = [
       description: "Ένα γρήγορο και θρεπτικό πρωινό με υψηλή πρωτεΐνη.",
       serves: "1",
       ingredients: [
-        { label: "Γιαούρτι 5%", macroKey: "yogurt_5pct", baseAmountGrams: 200 },
+        { label: "Γιαούρτι 2%", macroKey: "yogurt_2pct", baseAmountGrams: 200 },
         { label: "Whey protein", macroKey: "whey_protein", baseAmountGrams: 15 },
         { label: "Φρούτο εποχής", macroKey: "seasonal_fruit", baseAmountGrams: 150 },
         { label: "Γκρανόλα", macroKey: "granola", baseAmountGrams: 35 },
@@ -109,7 +109,8 @@ export const breakfast: FoodEntry[] = [
     id: 5,
     wFrequency: 1,
     category: "mixed",
-    description: "Πανκέικς πρωτεΐνης\n 3 ασπράδια, 1 κρόκο\n 40γρ βρώμη, 15γρ whey\n 1 μπανάνα\n 15γρ φυστικοβούτυρο, 2 κ.γ μέλι",
+    description:
+      "Πανκέικς πρωτεΐνης\n 3 ασπράδια, 1 κρόκο\n 40γρ βρώμη, 15γρ whey\n 1 μπανάνα\n 15γρ φυστικοβούτυρο, 2 κ.γ μέλι",
     recipe: {
       id: 15,
       category: "mixed",
@@ -1357,7 +1358,8 @@ export const snacks: FoodEntry[] = [
     id: 7,
     wFrequency: 2,
     category: "mixed",
-    description: "Choco-Banana Mug Cake\n 1 scoop whey σοκολάτα\n 35γρ βρώμη, 1 μπανάνα\n 20γρ φυστικοβούτυρο, 2 κ.γ μέλι",
+    description:
+      "Choco-Banana Mug Cake\n 1 scoop whey σοκολάτα\n 35γρ βρώμη, 1 μπανάνα\n 20γρ φυστικοβούτυρο, 2 κ.γ μέλι",
     recipe: {
       id: 7,
       category: "mixed",
@@ -1374,8 +1376,8 @@ export const snacks: FoodEntry[] = [
         { label: "Μέλι", macroKey: "honey", baseAmountGrams: 14 },
       ],
       instructions: [
-        "Λιώνουμε τη μπανάνα σε μια κούπα.",
-        "Προσθέτουμε whey, βρώμη και κακάο. Ανακατεύουμε.",
+        "Λιώνουμε σε ένα πιάτο τη μπανάνα με πιρούνι και μεταφέρουμε σε μια microwave safe κούπα.",
+        "Προσθέτουμε whey, βρώμη και κακάο. Ανακατεύουμε. Tip: Αλέθουμε την βρώμη στο blender για πιο ομοιογενές και νόστιμο αποτέλεσμα.",
         "Στο φούρνο μικροκυμάτων για 1.5 λεπτά.",
         "Σερβίρουμε με φυστικοβούτυρο και μέλι από πάνω.",
       ],
@@ -1397,10 +1399,7 @@ export const snacks: FoodEntry[] = [
         { label: "Φρούτο εποχής", macroKey: "seasonal_fruit", baseAmountGrams: 150 },
         { label: "Whey protein", macroKey: "whey_protein", baseAmountGrams: 30 },
       ],
-      instructions: [
-        "Ανακατεύουμε τη whey σε νερό ή γάλα.",
-        "Σερβίρουμε μαζί με φρούτο εποχής.",
-      ],
+      instructions: ["Ανακατεύουμε τη whey σε νερό ή γάλα.", "Σερβίρουμε μαζί με φρούτο εποχής."],
     },
   },
 ];

@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useStorage } from "../hooks/useStorage";
-import { UserProfile as UserProfileT } from "../types/userProfile";
+import { useUserProfileStorage } from "../hooks/useStorage";
 import { macroCalculator } from "../services/CalculatorService";
 import { Badge, Dialog, Flex, IconButton, ScrollArea, Spinner, Text } from "@radix-ui/themes";
 import { X, CalculatorIcon } from "lucide-react";
@@ -12,7 +11,7 @@ export const UserProfileFab = () => {
   const [open, setOpen] = useState(false);
   const {
     getItem: { data: userProfile, isLoading },
-  } = useStorage<UserProfileT>("userProfile");
+  } = useUserProfileStorage();
 
   const macros = userProfile ? macroCalculator(userProfile) : undefined;
 

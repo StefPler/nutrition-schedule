@@ -44,6 +44,7 @@ export const FOOD_MACRO_DB: Record<string, FoodMacroEntry> = {
   cream_cheese: { calories: 215, protein: 5, carbs: 4, fat: 20, fiber: 0 },
   yogurt_plain: { calories: 61, protein: 3.2, carbs: 7, fat: 1.5, fiber: 0 },
   yogurt_5pct: { calories: 97, protein: 3.3, carbs: 4.5, fat: 5, fiber: 0 },
+  yogurt_2pct: { calories: 70, protein: 4, carbs: 4, fat: 2, fiber: 0 },
   cottage_cheese: { calories: 98, protein: 11, carbs: 3.4, fat: 4.3, fiber: 0 },
   halloumi: { calories: 321, protein: 21, carbs: 2, fat: 25, fiber: 0 },
   katiki_cheese: { calories: 170, protein: 7, carbs: 1, fat: 15, fiber: 0 },

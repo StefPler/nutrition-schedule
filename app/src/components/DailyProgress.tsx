@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
-import { useStorage } from "../hooks/useStorage";
+import { useUserProfileStorage } from "../hooks/useStorage";
 import { useDailyCheckins } from "../hooks/useDailyCheckins";
 import { useMealPortions } from "../hooks/useMealPortions";
-import { UserProfile as UserProfileT } from "../types/userProfile";
 import { macroCalculator } from "../services/CalculatorService";
 import { Meal } from "../types/period";
 
@@ -35,7 +34,7 @@ const ProgressBar = ({
 export const DailyProgress = () => {
   const {
     getItem: { data: userProfile, isLoading },
-  } = useStorage<UserProfileT>("userProfile");
+  } = useUserProfileStorage();
   const { checkedMeals, todayDayName } = useDailyCheckins();
   const mealPortions = useMealPortions(todayDayName);
 

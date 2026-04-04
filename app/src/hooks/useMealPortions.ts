@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { useStorage } from "./useStorage";
+import { useUserProfileStorage } from "./useStorage";
 import { useGetSchedule } from "./useGetSchedule";
-import { UserProfile } from "../types/userProfile";
 import { Days, Meal } from "../types/period";
 import { MealPortion } from "../types/nutrition";
 import { calculateDayPortions } from "../services/PortionCalculatorService";
@@ -9,7 +8,7 @@ import { calculateDayPortions } from "../services/PortionCalculatorService";
 export const useMealPortions = (dayName: Days): Record<Meal, MealPortion> | null => {
   const {
     getItem: { data: userProfile },
-  } = useStorage<UserProfile>("userProfile");
+  } = useUserProfileStorage();
   const { data: schedule } = useGetSchedule();
 
   return useMemo(() => {
@@ -27,7 +26,7 @@ export type AllDayPortions = Record<Days, Record<Meal, MealPortion>>;
 export const useAllDayPortions = (): AllDayPortions | null => {
   const {
     getItem: { data: userProfile },
-  } = useStorage<UserProfile>("userProfile");
+  } = useUserProfileStorage();
   const { data: schedule } = useGetSchedule();
 
   return useMemo(() => {

@@ -16,11 +16,11 @@ import {
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { Select } from "@radix-ui/themes";
-import { ActivityLevel, UserProfile, WeightLossPerWeek } from "../types/userProfile";
-import { useStorage } from "../hooks/useStorage";
-import { useEffect } from "react";
+import { ActivityLevel, UserProfile, WeightLossRate } from "../types/userProfile";
+import { useUserProfileStorage } from "../hooks/useStorage";
+import { useEffect, useMemo } from "react";
 
-type FormWeightLossPerWeek = "Maintain" | "QuarterKg" | "HalfKg" | "OneKg";
+type FormWeightLossRate = "Maintain" | "Conservative" | "Moderate" | "Aggressive";
 
 type FormActivityLevel = "Sedentary" | "LightlyActive" | "ModeratelyActive" | "VeryActive";
 
@@ -48,7 +48,7 @@ const FormSchema = z.object({
     required_error: "Can not be empty",
     message: "Invalid gender",
   }),
-  weightLossPerWeek: z.enum(["Maintain", "QuarterKg", "HalfKg", "OneKg"], {
+  weightLossRate: z.enum(["Maintain", "Conservative", "Moderate", "Aggressive"], {
     required_error: "Can not be empty",
     message: "Invalid weight loss target",
   }),
@@ -64,7 +64,7 @@ const parseFormToUserProfile = (data: z.infer<typeof FormSchema>): UserProfile =
     height: data.height,
     age: data.age,
     gender: data.gender,
-    weightLossPerWeek: WeightLossPerWeek[data.weightLossPerWeek as keyof typeof WeightLossPerWeek],
+    weightLossRate: WeightLossRate[data.weightLossRate as keyof typeof WeightLossRate],
     activityLevel: ActivityLevel[data.activityLevel as keyof typeof ActivityLevel],
   };
 };
@@ -77,13 +77,13 @@ const parseUserProfileToForm = (userProfile: UserProfile | undefined): z.infer<t
     height: userProfile.height,
     age: userProfile.age,
     gender: userProfile.gender,
-    weightLossPerWeek: WeightLossPerWeek[userProfile.weightLossPerWeek] as FormWeightLossPerWeek,
+    weightLossRate: WeightLossRate[userProfile.weightLossRate] as FormWeightLossRate,
     activityLevel: ActivityLevel[userProfile.activityLevel] as FormActivityLevel,
   };
 };
 
 export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) => {
-  const { getItem: getUserProfile, setItem: setUserProfile } = useStorage<UserProfile>("userProfile"); // Assuming you have a hook to get user profile
+  const { getItem: getUserProfile, setItem: setUserProfile } = useUserProfileStorage();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     // defaultValues: parseUserProfileToForm(userProfile),
@@ -111,6 +111,23 @@ export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) =>
       form.reset(parsed);
     }
   }, [getUserProfile.data]);
+
+  const watchedValues = form.watch(["weight", "height", "age", "gender", "activityLevel", "weightLossRate"]);
+  const estimatedWeeklyLoss = useMemo(() => {
+    const [weight, height, age, gender, activityLevelKey, weightLossRateKey] = watchedValues;
+    if (!weight || !height || !age || !gender || !activityLevelKey || !weightLossRateKey) return null;
+
+    const activityLevel = ActivityLevel[activityLevelKey as keyof typeof ActivityLevel];
+    const rate = WeightLossRate[weightLossRateKey as keyof typeof WeightLossRate];
+    if (!rate) return null;
+
+    const bmr =
+      gender === "male" ? 10 * weight + 6.25 * height - 5 * age + 5 : 10 * weight + 6.25 * height - 5 * age - 161;
+    const tdee = bmr * activityLevel;
+    const dailyDeficit = tdee * rate;
+    // 7700 kcal ≈ 1 kg of fat
+    return ((dailyDeficit * 7) / 7700).toFixed(2);
+  }, [watchedValues]);
 
   return (
     <Form {...form}>
@@ -180,28 +197,6 @@ export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) =>
           />
           <FormField
             control={form.control}
-            name="weightLossPerWeek"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Απώλεια βάρους ανά εβδομάδα</FormLabel>
-                <FormControl>
-                  <Select.Root value={field.value} onValueChange={(value) => value && field.onChange(value)}>
-                    <Select.Trigger className="flex h-10 rounded-md" placeholder="π.χ: 0.5 Kg" />
-                    <Select.Content position="popper">
-                      <Select.Item value="Maintain">Διατήρηση</Select.Item>
-                      <Select.Item value="QuarterKg">0.25 Kg</Select.Item>
-                      <Select.Item value="HalfKg">0.5 Kg</Select.Item>
-                      <Select.Item value="OneKg">1 Kg</Select.Item>
-                    </Select.Content>
-                  </Select.Root>
-                </FormControl>
-                <FormDescription>Πόσα κιλά θα ήθελες να χάνεις την εβδομάδα.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="activityLevel"
             render={({ field }) => (
               <FormItem className="flex flex-col">
@@ -218,6 +213,32 @@ export const MacroForm = ({ updateCallback }: { updateCallback: () => void }) =>
                   </Select.Root>
                 </FormControl>
                 <FormDescription>Πόσο συχνά κάνεις γυμναστική η κάποια αθλητική δραστιριότητα.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="weightLossRate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Ρυθμός απώλειας βάρους</FormLabel>
+                <FormControl>
+                  <Select.Root value={field.value} onValueChange={(value) => value && field.onChange(value)}>
+                    <Select.Trigger className="flex h-10 rounded-md" placeholder="π.χ: Μέτριος" />
+                    <Select.Content position="popper">
+                      <Select.Item value="Maintain">Διατήρηση</Select.Item>
+                      <Select.Item value="Conservative">Συντηρητικός (15%)</Select.Item>
+                      <Select.Item value="Moderate">Μέτριος (20%)</Select.Item>
+                      <Select.Item value="Aggressive">Επιθετικός (25%)</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </FormControl>
+                <FormDescription>
+                  {estimatedWeeklyLoss
+                    ? `~${estimatedWeeklyLoss} kg/εβδομάδα (εκτίμηση)`
+                    : "Ποσοστό μείωσης θερμίδων από τις ημερήσιες ανάγκες σου."}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

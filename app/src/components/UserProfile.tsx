@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useStorage } from "../hooks/useStorage";
-import { UserProfile as UserProfileT } from "../types/userProfile";
+import { useUserProfileStorage } from "../hooks/useStorage";
 import { macroCalculator } from "../services/CalculatorService";
 import { Badge, Card, Flex, Separator, Spinner } from "@radix-ui/themes";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
@@ -13,7 +12,7 @@ export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
     getItem: { data: userProfile, isLoading },
-  } = useStorage<UserProfileT>("userProfile");
+  } = useUserProfileStorage();
 
   const macros = userProfile ? macroCalculator(userProfile) : undefined;
 

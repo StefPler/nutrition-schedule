@@ -5,11 +5,11 @@ export enum ActivityLevel {
   VeryActive = 1.725,
 }
 
-export enum WeightLossPerWeek {
+export enum WeightLossRate {
   Maintain = 0,
-  QuarterKg = 150,
-  HalfKg = 300,
-  OneKg = 500,
+  Conservative = 0.15,
+  Moderate = 0.20,
+  Aggressive = 0.25,
 }
 
 export type Gender = "male" | "female";
@@ -19,6 +19,22 @@ export type UserProfile = {
   height: number;
   age: number;
   gender: Gender;
-  weightLossPerWeek: WeightLossPerWeek;
+  weightLossRate: WeightLossRate;
   activityLevel: ActivityLevel;
+};
+
+const validWeightLossRates = new Set(Object.values(WeightLossRate));
+const validActivityLevels = new Set(Object.values(ActivityLevel));
+
+export const isValidUserProfile = (value: unknown): value is UserProfile => {
+  if (typeof value !== "object" || value === null) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.weight === "number" &&
+    typeof v.height === "number" &&
+    typeof v.age === "number" &&
+    (v.gender === "male" || v.gender === "female") &&
+    validWeightLossRates.has(v.weightLossRate as WeightLossRate) &&
+    validActivityLevels.has(v.activityLevel as ActivityLevel)
+  );
 };
