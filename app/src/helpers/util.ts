@@ -8,6 +8,22 @@ export const ingredientLabel = (ing: Ingredient | ScaledIngredient): string => {
   return `${grams}γρ ${ing.label}`;
 };
 
+/**
+ * Split an ingredient into its two display parts: a name (Greek label) and
+ * an amount string (grams). Used by the recipes page to render
+ * the name and amount in separate rows.
+ *
+ * Mirrors `ingredientLabel(ing)` but returns the parts separately instead
+ * of the concatenated string "{grams}γρ {label}".
+ */
+export const ingredientParts = (ing: Ingredient | ScaledIngredient): { name: string; amount: string } => {
+  const grams = "grams" in ing ? ing.grams : ing.baseAmountGrams;
+  return {
+    name: ing.label,
+    amount: `${grams}γρ`,
+  };
+};
+
 const getRandomElement = (array: Array<any>) => {
   const randomElement = array[Math.floor(Math.random() * array.length)];
   return randomElement;

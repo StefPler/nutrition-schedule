@@ -98,3 +98,38 @@ ul {
     animation-fill-mode: forwards !important;
   }
 }
+
+/* Radix Collapsible height animation driven by the content-height CSS var.
+   Used by MealAccordionCard — fades alone would pop the layout open in one
+   frame, so we animate the actual height for a smooth reveal. */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+.collapsible-content {
+  overflow: hidden;
+}
+.collapsible-content[data-state='open'] {
+  animation: collapsible-down 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.collapsible-content[data-state='closed'] {
+  animation: collapsible-up 200ms cubic-bezier(0.64, 0, 0.78, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .collapsible-content[data-state='open'],
+  .collapsible-content[data-state='closed'] {
+    animation-duration: 1ms;
+  }
+}
