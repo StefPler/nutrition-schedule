@@ -12,7 +12,7 @@ export default function Home() {
       {/* Page heading – mobile only */}
       <div className="text-center px-4 mt-6 mb-1">
         <Heading className="text-center" size="6">
-          <Text size="8" className="text-emerald-700 font-bold">
+          <Text size="7" className="text-emerald-700 font-bold">
             {date.getHours() > 12 ? "✨ Καλήν σας εσπέρα ✨" : "🌸 Καλήν σας ημέρα 🌸"}
           </Text>
         </Heading>

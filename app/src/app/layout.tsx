@@ -40,11 +40,7 @@ export default function RootLayout({ children }: ChildrenProps) {
       {/* "bg-gradient-to-r from-teal-100 to-yellow-100 " */}
       <body className={clsx(inter.className)}>
         <Providers>
-          <Theme
-            accentColor="teal"
-            hasBackground={true}
-            panelBackground="translucent"
-            className="bg-gradient-to-br from-teal-100 to-green-200 ">
+          <Theme accentColor="teal" hasBackground={true} panelBackground="translucent" className="bg-teal-50">
             {process.env.NODE_ENV === "development" && <ThemePanel />}
             <NavbarSticky />
             <div className="max-w-[1400px] mx-auto">{children}</div>
